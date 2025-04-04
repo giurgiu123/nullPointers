@@ -89,10 +89,11 @@ public class GeneExplorerUIv2 {
                 geneInfoArea.setText(info);
 
                 // 🔗 Step 2: Build KEGG ID
-                String keggFindUrl = "https://rest.kegg.jp/find/genes/" + gene;
+                String keggFindUrl= "https://rest.kegg.jp/find/genes/" + gene;
                 String keggData = GeneInteractionNetworkv2.getTextFromUrl(keggFindUrl);
                 String[] lines = keggData.split("\n");
                 String keggId = lines[0].split("\t")[0];
+
 
                 // 🧠 Step 3: Fetch interactions
                 GeneInteractionNetworkv2.InteractionData data = GeneInteractionNetworkv2.fetchKEGGInteractions(keggId, gene);
