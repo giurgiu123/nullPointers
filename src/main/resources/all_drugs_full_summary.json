@@ -1,0 +1,109 @@
+[
+    {
+        "Drug": "Alpelisib",
+        "Gene": [
+            "PIK3CA",
+            "PTEN"
+        ],
+        "Disease": [
+            "Breast cancer"
+        ],
+        "Mechanism": [
+            "PI3K inhibitor",
+            "PI3K pathway modulator"
+        ]
+    },
+    {
+        "Drug": "Idasanutlin",
+        "Gene": [
+            "MDM2",
+            "TP53"
+        ],
+        "Disease": [
+            "Acute myeloid leukemia"
+        ],
+        "Mechanism": [
+            "MDM2 inhibitor"
+        ]
+    },
+    {
+        "Drug": "Imatinib",
+        "Gene": [
+            "KIT",
+            "KITLG",
+            "PDGFRA"
+        ],
+        "Disease": [
+            "Gastrointestinal stromal tumor"
+        ],
+        "Mechanism": [
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "JQ1",
+        "Gene": [
+            "MYC"
+        ],
+        "Disease": [
+            "Multiple myeloma"
+        ],
+        "Mechanism": [
+            "BET bromodomain inhibitor"
+        ]
+    },
+    {
+        "Drug": "Lapatinib",
+        "Gene": [
+            "EGFR",
+            "ERBB2"
+        ],
+        "Disease": [
+            "Breast cancer"
+        ],
+        "Mechanism": [
+            "EGFR/HER2 inhibitor"
+        ]
+    },
+    {
+        "Drug": "Olaparib",
+        "Gene": [
+            "BRCA1",
+            "BRCA2"
+        ],
+        "Disease": [
+            "Ovarian cancer"
+        ],
+        "Mechanism": [
+            "PARP inhibitor"
+        ]
+    },
+    {
+        "Drug": "Sunitinib",
+        "Gene": [
+            "KIT",
+            "PDGFRA",
+            "VEGFA"
+        ],
+        "Disease": [
+            "Renal cell carcinoma"
+        ],
+        "Mechanism": [
+            "Multi-targeted TKI",
+            "VEGF inhibitor"
+        ]
+    },
+    {
+        "Drug": "Tamoxifen",
+        "Gene": [
+            "BRCA1",
+            "ESR1"
+        ],
+        "Disease": [
+            "Breast cancer"
+        ],
+        "Mechanism": [
+            "Selective estrogen receptor modulator"
+        ]
+    }
+]

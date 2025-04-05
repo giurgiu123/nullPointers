@@ -1,0 +1,67 @@
+[
+    {
+        "Drug": "Idasanutlin",
+        "Gene": [
+            "MDM2",
+            "TP53"
+        ],
+        "Disease": [
+            "Acute myeloid leukemia"
+        ],
+        "Mechanism": [
+            "MDM2 inhibitor"
+        ]
+    },
+    {
+        "Drug": "Imatinib",
+        "Gene": [
+            "KIT",
+            "KITLG",
+            "PDGFRA"
+        ],
+        "Disease": [
+            "Gastrointestinal stromal tumor"
+        ],
+        "Mechanism": [
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "Lapatinib",
+        "Gene": [
+            "EGFR"
+        ],
+        "Disease": [
+            "Breast cancer"
+        ],
+        "Mechanism": [
+            "EGFR/HER2 inhibitor"
+        ]
+    },
+    {
+        "Drug": "Sunitinib",
+        "Gene": [
+            "KIT",
+            "PDGFRA"
+        ],
+        "Disease": [
+            "Renal cell carcinoma"
+        ],
+        "Mechanism": [
+            "Multi-targeted TKI",
+            "VEGF inhibitor"
+        ]
+    },
+    {
+        "Drug": "Tamoxifen",
+        "Gene": [
+            "BRCA1"
+        ],
+        "Disease": [
+            "Breast cancer"
+        ],
+        "Mechanism": [
+            "Selective estrogen receptor modulator"
+        ]
+    }
+]

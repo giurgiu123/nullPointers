@@ -69,3 +69,13 @@ KITLG,Imatinib,Gastrointestinal stromal tumor,TKI
 SMARCA4,PFI-3,Sarcoma,BRG1/BRM inhibitor
 NOTCH1,CB-103,T-cell acute lymphoblastic leukemia,NOTCH inhibitor
 WNT1,LGK974,Various cancers,Porcupine inhibitor
+CFTR,Ivacaftor,Cystic fibrosis,CFTR potentiator
+CFTR,Lumacaftor,Cystic fibrosis,CFTR corrector
+CFTR,Tezacaftor,Cystic fibrosis,CFTR corrector
+CFTR,Elexacaftor,Cystic fibrosis,CFTR corrector
+CFTR,Ivacaftor,Chronic sinusitis,CFTR potentiator
+CFTR,Elexacaftor,Lung disease,Protein modulator
+CFTR,Tezacaftor,Bronchiectasis,CFTR stabilizer
+CFTR,Ivacaftor,Pancreatic insufficiency,CFTR modulator
+CFTR,Lumacaftor,Liver disease,CFTR folding enhancer
+CFTR,Elexacaftor,Female infertility,CFTR channel enhancer

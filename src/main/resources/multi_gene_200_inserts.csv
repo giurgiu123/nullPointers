@@ -199,3 +199,13 @@ MET,Crizotinib,Lung cancer,MEK inhibitor
 EGFR,Lapatinib,Lung cancer,Immune checkpoint inhibitor
 BRCA1,Olaparib,Cancer,FGFR inhibitor
 VEGFA,Sunitinib,Prostate cancer,Monoclonal antibody
+CFTR,Ivacaftor,Cystic fibrosis,CFTR potentiator
+CFTR,Lumacaftor,Cystic fibrosis,CFTR corrector
+CFTR,Tezacaftor,Cystic fibrosis,CFTR corrector
+CFTR,Elexacaftor,Cystic fibrosis,CFTR corrector
+CFTR,Ivacaftor,Chronic sinusitis,CFTR potentiator
+CFTR,Elexacaftor,Lung disease,Protein modulator
+CFTR,Tezacaftor,Bronchiectasis,CFTR stabilizer
+CFTR,Ivacaftor,Pancreatic insufficiency,CFTR modulator
+CFTR,Lumacaftor,Liver disease,CFTR folding enhancer
+CFTR,Elexacaftor,Female infertility,CFTR channel enhancer

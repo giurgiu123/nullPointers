@@ -1,0 +1,68 @@
+[
+    {
+        "Drug": "Imatinib",
+        "Gene": [
+            "KIT",
+            "KITLG",
+            "PDGFRA"
+        ],
+        "Disease": [
+            "Advanced cancer",
+            "Brain tumor",
+            "Breast cancer",
+            "Cancer",
+            "Gastrointestinal stromal tumor",
+            "Hematologic malignancy",
+            "Lung cancer",
+            "Pancreatic cancer",
+            "Prostate cancer",
+            "Refractory tumor",
+            "Solid tumors",
+            "Thyroid cancer"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "CDK4/6 inhibitor",
+            "Epigenetic modulator",
+            "FGFR inhibitor",
+            "Immune checkpoint inhibitor",
+            "MEK inhibitor",
+            "Monoclonal antibody",
+            "PARP inhibitor",
+            "PI3K inhibitor",
+            "Selective estrogen modulator",
+            "Tyrosine kinase inhibitor",
+            "VEGF pathway blocker"
+        ]
+    },
+    {
+        "Drug": "Sunitinib",
+        "Gene": [
+            "KIT",
+            "PDGFRA",
+            "VEGFA"
+        ],
+        "Disease": [
+            "Advanced cancer",
+            "Brain tumor",
+            "Breast cancer",
+            "Cancer",
+            "Pancreatic cancer",
+            "Prostate cancer",
+            "Refractory tumor",
+            "Renal cell carcinoma"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "CDK4/6 inhibitor",
+            "Epigenetic modulator",
+            "FGFR inhibitor",
+            "MEK inhibitor",
+            "Monoclonal antibody",
+            "Multi-targeted TKI",
+            "Selective estrogen modulator",
+            "Tyrosine kinase inhibitor",
+            "VEGF inhibitor"
+        ]
+    }
+]
