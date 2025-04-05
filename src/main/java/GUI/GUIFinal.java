@@ -8,6 +8,7 @@ import DataModel.Gene;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -214,7 +215,32 @@ public class GUIFinal implements DrugManipulator {
                     return score2.compareTo(score1);
                 });
                 String[] columnNames = {"Gene", "Common Pathways", "Common Drugs", "Score"};
-                JTable similarityTable = new JTable(similarityRows.toArray(new Object[0][]), columnNames);
+                Object[][] similarityData = similarityRows.toArray(new Object[0][]);
+                JTable similarityTable = new JTable(new DefaultTableModel(similarityData, columnNames) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false; // toate celulele sunt doar pentru afișare
+                    }
+                });
+                similarityTable.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int row = similarityTable.rowAtPoint(e.getPoint());
+                        if (row >= 0) {
+                            String gene = similarityTable.getValueAt(row, 0).toString();
+                            String pathways = similarityTable.getValueAt(row, 1).toString();
+                            String drugs = similarityTable.getValueAt(row, 2).toString();
+                            String score = similarityTable.getValueAt(row, 3).toString();
+
+                            String message = String.format(
+                                    "Gene: %s\nCommon Pathways: %s\nCommon Drugs: %s\nScore: %s",
+                                    gene, pathways, drugs, score
+                            );
+
+                            JOptionPane.showMessageDialog(null, message, "Gene Similarity Details", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                });
                 JScrollPane scrollPane = new JScrollPane(similarityTable);
                 JFrame similarityFrame = new JFrame("Gene Similarity");
                 similarityFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -286,7 +312,8 @@ public class GUIFinal implements DrugManipulator {
             panel.add(progressBar, BorderLayout.SOUTH);
 
             loadingDialog.getContentPane().add(panel);
-            loadingDialog.setSize(350, 140);
+            loadingDialog.setSize(350, 180);
+            loadingDialog.setResizable(false); // sa nu poata modifica dim
             loadingDialog.setLocationRelativeTo(null);
             loadingDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
@@ -319,7 +346,8 @@ public class GUIFinal implements DrugManipulator {
                         JFrame graphFrame = new JFrame("KGML Graph - " + selectedPathway);
                         graphFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                         graphFrame.add(graph, BorderLayout.CENTER);
-                        graphFrame.setSize(1200, 800);
+                        graphFrame.setSize(1500, 1000);
+                        graphFrame.setResizable(false);
                         graphFrame.setLocationRelativeTo(null);
                         graphFrame.setVisible(true);
                     } catch (Exception ex) {
@@ -360,7 +388,12 @@ public class GUIFinal implements DrugManipulator {
                 }
 
                 Object[][] tableData = rowData.toArray(new Object[0][]);
-                JTable table = new JTable(tableData, columnNames);
+                JTable table = new JTable(tableData, columnNames){
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false; // toate celulele sunt doar pentru afișare
+                    }
+                };
                 table.setFont(new Font("Times New Roman", Font.PLAIN, 12));
                 table.setRowHeight(30);
                 table.setGridColor(new Color(200, 200, 200));
@@ -464,7 +497,13 @@ public class GUIFinal implements DrugManipulator {
                 Map<String, List<DrugInfo>> drugMap = GeneInteractionNetworkv2.loadDrugMapFromJSON("src/main/resources/generated_gene_drug_summary.json");
                 List<Object[]> drugRows = GeneInteractionNetworkv2.filterDrugsForGene(data, drugMap);
                 String[] columnNames = {"Gene", "Drug", "Indication", "Mechanism"};
-                JTable drugTable = new JTable(drugRows.toArray(new Object[0][]), columnNames);
+                JTable drugTable = new JTable(drugRows.toArray(new Object[0][]), columnNames){
+
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false; // toate celulele sunt doar pentru afișare
+                    }
+                };
                 drugTable.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {

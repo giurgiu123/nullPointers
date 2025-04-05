@@ -30,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -283,7 +284,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
                         if (newHovered != hoveredNode) {
                             hoveredNode = newHovered;
                             if (hoveredNode != null) {
-                                setToolTipText("Type: " + hoveredNode.getType());
+                                setToolTipText("Type: " + hoveredNode.getName());
                             } else {
                                 setToolTipText(null);
                             }
@@ -361,12 +362,65 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
                 gn.setY(graphics.getY());
             } else {
                 // fallback: coordonate random
-                gn.setX(new Random().nextInt(800) + 50);
-                gn.setY(new Random().nextInt(600) + 50);
+                gn.setX(e.getGraphics().getX());
+                gn.setY(e.getGraphics().getY());
             }
             nodes.add(gn);
             nodeMap.put(e.getId(), gn);
         }
+// 📐 Calculăm zona originală (bounding box)
+        int minX = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE;
+        int minY = Integer.MAX_VALUE, maxY = Integer.MIN_VALUE;
+
+        for (GeneNode node : nodes) {
+            minX = Math.min(minX, node.getX());
+            maxX = Math.max(maxX, node.getX());
+            minY = Math.min(minY, node.getY());
+            maxY = Math.max(maxY, node.getY());
+        }
+
+// 🧭 Spațiul final dorit
+        int targetWidth = 1500;
+        int targetHeight = 1000;
+        int padding = 50;
+
+// 🧮 Calculăm scale separat pe X și Y pentru a folosi întreg spațiul
+        double scaleX = (targetWidth - 2.0 * padding) / (maxX - minX);
+        double scaleY = (targetHeight - 2.0 * padding) / (maxY - minY);
+
+// 🪄 Rescalăm coordonatele fără păstrarea proporției (stretch full screen)
+        for (GeneNode node : nodes) {
+            int originalX = node.getX();
+            int originalY = node.getY();
+
+            int newX = (int) ((originalX - minX) * scaleX + padding);
+            int newY = (int) ((originalY - minY) * scaleY + padding);
+
+            node.setX(newX);
+            node.setY(newY);
+        }
+
+////
+//        int targetWidth = 1500;
+//        int targetHeight = 1000;
+//        int padding = 50;
+//
+////
+//        double scaleX = (targetWidth - 2.0 * padding) / (maxX - minX);
+//        double scaleY = (targetHeight - 2.0 * padding) / (maxY - minY);
+//        double scale = Math.min(scaleX, scaleY); // păstrăm proporțiile
+//
+////
+//        for (GeneNode node : nodes) {
+//            int originalX = node.getX();
+//            int originalY = node.getY();
+//
+//            int newX = (int) ((originalX - minX) * scale + padding);
+//            int newY = (int) ((originalY - minY) * scale + padding);
+//
+//            node.setX(newX);
+//            node.setY(newY);
+//        }
 
         List<GeneEdge> edges = new ArrayList<>();
         Map<String, String> nodeRelationTypes = new HashMap<>();
@@ -527,30 +581,36 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
     public static void displayNetworkAndDrugSuggestions(InteractionData data) {
         Viewer viewer = createGraphViewer(data);
         Component graphPanel = viewer.getDefaultView();
-        // Folosește noua metodă pentru a încărca harta medicamentelor din JSON
+
+        // Încarcă harta de medicamente
         Map<String, List<DrugInfo>> drugDB = loadDrugMapFromJSON("src/main/resources/generated_gene_drug_summary.json");
         List<Object[]> rows = new ArrayList<>();
+
         for (GeneNode gene : data.nodes) {
             for (Map.Entry<String, List<DrugInfo>> entry : drugDB.entrySet()) {
                 String geneSymbol = entry.getKey();
                 if (geneSymbol.equalsIgnoreCase(gene.symbol)) {
-                    int score = 0;
-                    if ("similar".equals(gene.type)) {
-                        score += 10;
-                    } else if ("interactor".equals(gene.type)) {
-                        score += 5;
-                    } else if ("central".equals(gene.type)) {
-                        score += 0;
-                    }
                     for (DrugInfo drug : entry.getValue()) {
-                        rows.add(new Object[]{gene.symbol, drug.getDrugName(), drug.getIndication(), score, drug.getMechanism()});
+                        rows.add(new Object[]{
+                                gene.symbol,
+                                drug.getDrugName(),
+                                drug.getIndication(),
+                                drug.getMechanism()
+                        });
                     }
                 }
             }
         }
-        String[] columnNames = { "Gene", "Drug", "Indication", "Repurposing Score", "Mechanism" };
+
+        String[] columnNames = { "Gene", "Drug", "Indication", "Mechanism" };
         Object[][] tableData = rows.toArray(new Object[0][]);
-        JTable table = new JTable(tableData, columnNames);
+        JTable table = new JTable(new DefaultTableModel(tableData, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // toate celulele devin non-editabile
+            }
+        });
+
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -558,18 +618,37 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
                 int col = table.columnAtPoint(e.getPoint());
                 if (row >= 0 && col == 1) {
                     String drugName = (String) table.getValueAt(row, col);
-                    String mechanism = (String) table.getValueAt(row, 4);
-                    JOptionPane.showMessageDialog(null, "Drug: " + drugName + "\nMechanism: " + mechanism, "Drug Info", JOptionPane.INFORMATION_MESSAGE);
+                    String mechanism = (String) table.getValueAt(row, 3); // index ajustat
+                    JOptionPane.showMessageDialog(null,
+                            "Drug: " + drugName + "\nMechanism: " + mechanism,
+                            "Drug Info",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
                 }
             }
         });
+
         JScrollPane tableScroll = new JScrollPane(table);
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, graphPanel, tableScroll);
         splitPane.setDividerLocation(700);
+
+        // 🔙 Butonul "Back"
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> {
+            Window window = SwingUtilities.getWindowAncestor(backButton);
+            if (window != null) window.dispose();
+        });
+
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        bottomPanel.add(backButton);
+
+        // 🪟 Frame principal
         JFrame frame = new JFrame("Gene Interaction Network & Drug Repurposing Suggestions");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
         frame.add(splitPane, BorderLayout.CENTER);
+        frame.add(bottomPanel, BorderLayout.SOUTH);
         frame.setSize(1200, 800);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-}
+    }}

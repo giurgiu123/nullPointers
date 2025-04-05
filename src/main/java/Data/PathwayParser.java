@@ -33,30 +33,65 @@ public class PathwayParser implements GetParsePath{
         this.gene = gene;
     }
 
-    public List<Entry> parseKGML(String pathwayId) throws Exception {
-        String urlString = "https://rest.kegg.jp/get/" + pathwayId + "/kgml";
-        String kgmlText = getTextFromUrl(urlString);
+//    public List<Entry> parseKGML(String pathwayId) throws Exception {
+//        String urlString = "https://rest.kegg.jp/get/" + pathwayId + "/kgml";
+//        String kgmlText = getTextFromUrl(urlString);
+//
+//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder builder = factory.newDocumentBuilder();
+//        Document doc = builder.parse(new ByteArrayInputStream(kgmlText.getBytes(StandardCharsets.UTF_8)));
+//        doc.getDocumentElement().normalize();
+//
+//        List<Entry> entries = new ArrayList<>();
+//        NodeList entryNodes = doc.getElementsByTagName("entry");
+//        for (int i = 0; i < entryNodes.getLength(); i++) {
+//            Node node = entryNodes.item(i);
+//            if (node.getNodeType() == Node.ELEMENT_NODE) {
+//                Element element = (Element) node;
+//                String id = element.getAttribute("id");
+//                String name = element.getAttribute("name");
+//                String type = element.getAttribute("type");
+//                Entry entry = new Entry(id, name, type);
+//                entries.add(entry);
+//            }
+//        }
+//        return entries;
+//    }
+public List<Entry> parseKGML(String pathwayId) throws Exception {
+    String urlString = "https://rest.kegg.jp/get/" + pathwayId + "/kgml";
+    String kgmlText = getTextFromUrl(urlString);
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(new ByteArrayInputStream(kgmlText.getBytes(StandardCharsets.UTF_8)));
-        doc.getDocumentElement().normalize();
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(new ByteArrayInputStream(kgmlText.getBytes(StandardCharsets.UTF_8)));
+    doc.getDocumentElement().normalize();
 
-        List<Entry> entries = new ArrayList<>();
-        NodeList entryNodes = doc.getElementsByTagName("entry");
-        for (int i = 0; i < entryNodes.getLength(); i++) {
-            Node node = entryNodes.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element) node;
-                String id = element.getAttribute("id");
-                String name = element.getAttribute("name");
-                String type = element.getAttribute("type");
-                Entry entry = new Entry(id, name, type);
-                entries.add(entry);
+    List<Entry> entries = new ArrayList<>();
+    NodeList entryNodes = doc.getElementsByTagName("entry");
+    for (int i = 0; i < entryNodes.getLength(); i++) {
+        Node node = entryNodes.item(i);
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+            Element element = (Element) node;
+            String id = element.getAttribute("id");
+            String name = null;
+            String type = element.getAttribute("type");
+
+            NodeList graphicsNodes = element.getElementsByTagName("graphics");
+            GraphicsEntry graphicsEntry = null;
+
+            if (graphicsNodes.getLength() > 0) {
+                Element graphicsElement = (Element) graphicsNodes.item(0);
+                name = graphicsElement.getAttribute("name");
+                int x = Integer.parseInt(graphicsElement.getAttribute("x"));
+                int y = Integer.parseInt(graphicsElement.getAttribute("y"));
+                graphicsEntry = new GraphicsEntry(x, y);
             }
+            Entry entry = new Entry(id, name, type, graphicsEntry);
+            entries.add(entry);
         }
-        return entries;
     }
+    return entries;
+}
 
     /**
      * Metoda parseRelations descarcă același fișier KGML pentru un pathway dat,
