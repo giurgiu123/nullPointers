@@ -1,4 +1,4 @@
-package Data;
+package GUI;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -140,7 +140,7 @@ public class GeneOverview {
     }
 
     // Fetch and parse JSON
-    private static JSONObject getJsonFromUrl(String urlString) throws Exception {
+    public static JSONObject getJsonFromUrl(String urlString) throws Exception {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
