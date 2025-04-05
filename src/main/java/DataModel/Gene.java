@@ -110,4 +110,6 @@ public class Gene {
     public List<PathWay> getPathWays() {
         return pathWays;
     }
+
+
 }
