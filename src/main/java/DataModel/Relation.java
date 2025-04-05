@@ -4,7 +4,7 @@ package DataModel;
 public class Relation {
     private Entry entry1;
     private Entry entry2;
-    private String relationType; // "inhibition" sau "activation"
+    private String relationType; // "inhibition" or "activation"
 
     public Relation(Entry entry1, Entry entry2, String relationType) {
         this.entry1 = entry1;
@@ -49,12 +49,5 @@ public class Relation {
     public String toString() {
         return "Relation [Entry1=" + entry1 + ", Entry2=" + entry2 + ", RelationType=" + relationType + "]";
     }
-
-    // Metodă de afișare a relației
-    public void display() {
-        System.out.println(this);
-    }
-
-    // Metoda main pentru a testa clasa Relation
 
 }

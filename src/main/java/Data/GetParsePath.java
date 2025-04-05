@@ -1,8 +1,11 @@
 package Data;
 
+import DataModel.Entry;
+import DataModel.Relation;
+
 import java.util.List;
 
 public interface GetParsePath {
-    public List<PathwayParser.Relation> parseRelations(String pathwayId) throws Exception ;
-    public List<PathwayParser.Entry> parseKGML(String pathwayId) throws Exception ;
+    public List<Relation> parseRelations(String pathwayId) throws Exception ;
+    public List<Entry> parseKGML(String pathwayId) throws Exception ;
 }
