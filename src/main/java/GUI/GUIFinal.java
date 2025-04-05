@@ -193,8 +193,7 @@ public class GUIFinal implements DrugManipulator {
                             if (!commonDrugs.isEmpty()) {
                                 List<String> commonPathways = getCommonPathways(selectedGene, gene);
                                 if (!commonPathways.isEmpty()) {
-                                    int score = commonPathways.size() * 1 + commonDrugs.size() * 5;
-                                    similarityRows.add(new Object[]{
+                                    float score = (float) (commonPathways.size() * 1 + commonDrugs.size() * 5) /100;                                    similarityRows.add(new Object[]{
                                             gene.getName(),
                                             String.join(", ", commonPathways),
                                             String.join(", ", commonDrugs),
@@ -210,8 +209,8 @@ public class GUIFinal implements DrugManipulator {
                     return;
                 }
                 similarityRows.sort((row1, row2) -> {
-                    Integer score1 = (Integer) row1[3];
-                    Integer score2 = (Integer) row2[3];
+                    Float score1 = (Float) row1[3];
+                    Float score2 = (Float) row2[3];
                     return score2.compareTo(score1);
                 });
                 String[] columnNames = {"Gene", "Common Pathways", "Common Drugs", "Score"};
