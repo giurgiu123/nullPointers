@@ -264,6 +264,8 @@ public class GeneExplorerUI extends JFrame {
         SwingUtilities.invokeLater(() -> new GeneExplorerUI());
     }
 
+
+
     // ============================
     // Clase pentru datele de interacțiune (preluate din KEGG)
     // ============================

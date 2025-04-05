@@ -6,6 +6,7 @@ import org.graphstream.ui.swingViewer.ViewPanel;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -25,7 +26,7 @@ import org.graphstream.ui.view.Viewer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import scala.util.parsing.combinator.testing.Str;
+
 
 public class GeneInteractionNetworkv2 {
 
@@ -192,7 +193,7 @@ public class GeneInteractionNetworkv2 {
         for (Map.Entry<String, String> entry : entryMap.entrySet()) {
             String entryId = entry.getKey();
             String symbol = entry.getValue();
-            if (!symbol.equals(geneSymbol) && !nodeMap.containsKey(entryId) && similarCount < 3000) {
+            if (!symbol.equals(geneSymbol) && !nodeMap.containsKey(entryId) && similarCount < 30) {
                 nodeMap.put(entryId, new GeneNode(entryId, symbol, "similar"));
                 edges.add(new GeneEdge("e_sim_" + entryId, centralEntryId, entryId, "similar"));
                 similarCount++;
@@ -202,7 +203,6 @@ public class GeneInteractionNetworkv2 {
         return new InteractionData(new ArrayList<>(nodeMap.values()), edges);
     }
 
-    // Metodă pentru a crea viewer-ul grafic al rețelei.
     public static Viewer createGraphViewer(InteractionData data) {
         SingleGraph graph = new SingleGraph("Gene-Gene Interaction Network");
         String styleSheet = ""
@@ -215,6 +215,7 @@ public class GeneInteractionNetworkv2 {
         graph.setAutoCreate(true);
         graph.setStrict(false);
 
+        // Adaugă nodurile și muchiile inițiale din data
         for (GeneNode gene : data.nodes) {
             Node n = graph.addNode(gene.id);
             n.setAttribute("ui.label", gene.symbol);
@@ -228,23 +229,125 @@ public class GeneInteractionNetworkv2 {
                 // Dacă muchia există deja, o ignorăm.
             }
         }
+
         Viewer viewer = graph.display();
-        // Adaugă un listener pe noduri (exemplu de interacțiune)
         ViewPanel viewPanel = (ViewPanel) viewer.getDefaultView();
+
+        // Elimină orice listener existent pentru a evita conflictele
+        for (MouseListener ml : viewPanel.getMouseListeners()) {
+            viewPanel.removeMouseListener(ml);
+        }
+
+        // Adaugă un singur listener pentru click pe noduri care reface graful
         viewPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 GraphicElement element = viewPanel.findNodeOrSpriteAt(e.getX(), e.getY());
-                if (element != null) {
-                    String nodeId = element.getId();
-                    Node clicked = graph.getNode(nodeId);
-                    System.out.println("Clicked on gene: " + clicked.getAttribute("ui.label")
-                            + " (Type: " + clicked.getAttribute("ui.class") + ")");
+                // Verificăm dacă elementul este un nod
+                if (element != null && element.getClass().getSimpleName().equals("Node")) {
+                    Node clickedNode = graph.getNode(element.getId());
+                    String clickedGeneKEGGId = clickedNode.getId();
+                    String clickedGeneSymbol = (String) clickedNode.getAttribute("ui.label");
+                    System.out.println("Clicked on gene: " + clickedGeneSymbol + " (" + clickedGeneKEGGId + ")");
+
+                    // Se preiau interacțiunile pentru gena clicată
+                    try {
+                        InteractionData newData = fetchKEGGInteractions(clickedGeneKEGGId, clickedGeneSymbol);
+
+                        // Ștergem tot graful curent
+                        graph.clear();
+
+                        // Re-adăugăm nodurile și muchiile noi din newData
+                        for (GeneNode gene : newData.nodes) {
+                            Node n = graph.addNode(gene.id);
+                            n.setAttribute("ui.label", gene.symbol);
+                            n.setAttribute("ui.class", gene.type);
+                        }
+                        for (GeneEdge edge : newData.edges) {
+                            try {
+                                Edge eNew = graph.addEdge(edge.id, edge.source, edge.target, true);
+                                eNew.setAttribute("ui.label", edge.interaction);
+                            } catch (Exception ex) {
+                                // Dacă muchia există deja, o ignorăm.
+                            }
+                        }
+
+                        // Reaplicăm stilul, dacă este necesar
+                        graph.setAttribute("ui.stylesheet", styleSheet);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
         return viewer;
     }
+//    public static Viewer createGraphViewer(InteractionData data) {
+//        SingleGraph graph = new SingleGraph("Gene-Gene Interaction Network");
+//        String styleSheet = ""
+//                + "graph { padding: 50px; }"
+//                + "node { fill-color: #61bffc; size: 40px; text-size: 14; text-alignment: center; stroke-mode: plain; stroke-color: #555; stroke-width: 2; }"
+//                + "node.central { fill-color: #aaffaa; shape: diamond; }"
+//                + "node.similar { fill-color: #ffaaaa; }"
+//                + "edge { fill-color: #9dbaea; text-size: 12; }";
+//        graph.setAttribute("ui.stylesheet", styleSheet);
+//        graph.setAutoCreate(true);
+//        graph.setStrict(false);
+//
+//        for (GeneNode gene : data.nodes) {
+//            Node n = graph.addNode(gene.id);
+//            n.setAttribute("ui.label", gene.symbol);
+//            n.setAttribute("ui.class", gene.type);
+//        }
+//        for (GeneEdge edge : data.edges) {
+//            try {
+//                Edge e = graph.addEdge(edge.id, edge.source, edge.target, true);
+//                e.setAttribute("ui.label", edge.interaction);
+//            } catch (Exception ex) {
+//                // Dacă muchia există deja, o ignorăm.
+//            }
+//        }
+//        Viewer viewer = graph.display();
+//        // Adaugă un listener pe noduri (exemplu de interacțiune)
+//       ViewPanel viewPanel = (ViewPanel) viewer.getDefaultView();
+//        viewPanel.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                GraphicElement element = viewPanel.findNodeOrSpriteAt(e.getX(), e.getY());
+//                if (element != null) {
+//                    String nodeId = element.getId();
+//                    Node clickedNode = graph.getNode(nodeId);
+//                    System.out.println("Clicked on gene: " + clickedNode.getAttribute("ui.label")
+//                            + " (Type: " + clickedNode.getAttribute("ui.class") + ")");
+//
+//                    // Ascunde toate nodurile și muchiile
+//                    for (Node node : graph) {
+//                        node.setAttribute("ui.hide", true);
+//                    }
+//                    for (Edge edge : graph.getEdgeSet()) {
+//                        edge.setAttribute("ui.hide", true);
+//                    }
+//
+//                    // Afișează nodul clicat și setează-l ca central
+//                    clickedNode.setAttribute("ui.hide", false);
+//                    clickedNode.setAttribute("ui.class", "central");
+//
+//                    // Afișează muchiile care pleacă din nodul clicat și nodurile țintă
+//                    for (Edge edge : clickedNode.getLeavingEdgeSet()) {
+//                        edge.setAttribute("ui.hide", false);
+//                        Node target = edge.getTargetNode();
+//                        target.setAttribute("ui.hide", false);
+//                        target.setAttribute("ui.class", "interactor");
+//                    }
+//
+//                    // Forțează reîmprospătarea vizualizării
+//                    viewPanel.repaint();
+//                }
+//            }
+//        });
+//        return viewer;
+//    }
 
     // Metodă pentru simularea unei baze de date de medicamente (exemplu static sau citit din CSV).
     public static Map<String, List<DrugInfo>> loadDrugMapFromCSV(String filePath) {
@@ -386,37 +489,198 @@ public class GeneInteractionNetworkv2 {
 
         return rows;
     }
+//
+//    public static void main(String[] args) {
+//        try {
+//            // Exemplu: folosim EGFR cu KEGG id "hsa:4210" și simbol "EGFR"
+//            String geneKEGGId = "hsa:4210";
+//            String geneSymbol = "TP53";
+//
+//            // Preia datele de interacțiune din KEGG.
+//            InteractionData data = fetchKEGGInteractions(geneKEGGId, geneSymbol);
+//
+//            // Afișează în consolă nodurile și muchiile.
+//            System.out.println("Nodes:");
+//            for (GeneNode node : data.nodes) {
+//                System.out.println(" - " + node.symbol + " (" + node.type + ")");
+//            }
+//            System.out.println("Edges:");
+//            for (GeneEdge edge : data.edges) {
+//                System.out.println(" - " + edge.source + " -> " + edge.target + " [" + edge.interaction + "]");
+//            }
+//
+//    // Alege una dintre metode:
+//            // 1. Afișează doar rețeaua:
+//            // createGraphViewer(data);
+//            // 2. Afișează doar tabelul cu medicamente:
+//            //displayDrugRepurposingSuggestions(data);
+//            // 3. Integrează rețeaua și tabelul într-un singur frame:
+//            // Afișează rețeaua și sugestiile de reorientare a medicamentelor într-o interfață combinată.
+//            displayNetworkAndDrugSuggestions(data);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+public static void main(String[] args) {
+    SwingUtilities.invokeLater(() -> {
+        // Creează fereastra principală
+        JFrame frame = new JFrame("Gene Interaction Network & Drug Repurposing Suggestions");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1200, 800);
+        frame.setLayout(new BorderLayout());
 
-    public static void main(String[] args) {
-        try {
-            // Exemplu: folosim EGFR cu KEGG id "hsa:4210" și simbol "EGFR"
-            String geneKEGGId = "hsa:4210";
-            String geneSymbol = "TP53";
+        // Panoul de input persistent cu câmpurile de text și butonul "Load"
+        JPanel inputPanel = new JPanel();
+        JLabel keggLabel = new JLabel("KEGG ID:");
+        JTextField keggField = new JTextField("hsa:4210", 10);
+        JLabel geneLabel = new JLabel("Gene Symbol:");
+        JTextField geneField = new JTextField("TP53", 10);
+        JButton loadButton = new JButton("Load");
+        inputPanel.add(keggLabel);
+        inputPanel.add(keggField);
+        inputPanel.add(geneLabel);
+        inputPanel.add(geneField);
+        inputPanel.add(loadButton);
+        frame.add(inputPanel, BorderLayout.NORTH);
 
-            // Preia datele de interacțiune din KEGG.
-            InteractionData data = fetchKEGGInteractions(geneKEGGId, geneSymbol);
+        // JTabbedPane pentru cele două tab-uri: Network și Drug Repurposing
+        JTabbedPane tabbedPane = new JTabbedPane();
+        frame.add(tabbedPane, BorderLayout.CENTER);
 
-            // Afișează în consolă nodurile și muchiile.
-            System.out.println("Nodes:");
-            for (GeneNode node : data.nodes) {
-                System.out.println(" - " + node.symbol + " (" + node.type + ")");
+        // Creează panourile pentru cele două tab-uri
+        JPanel networkPanel = new JPanel(new BorderLayout());
+        JPanel drugPanel = new JPanel(new BorderLayout());
+        tabbedPane.addTab("Network", networkPanel);
+        tabbedPane.addTab("Drug Repurposing", drugPanel);
+
+        // Funcție de încărcare și actualizare a datelor
+        Runnable loadData = () -> {
+            String geneKEGGId = keggField.getText().trim();
+            String geneSymbol = geneField.getText().trim();
+            try {
+                // Preia datele de interacțiune din KEGG
+                InteractionData data = fetchKEGGInteractions(geneKEGGId, geneSymbol);
+
+                // Afișează în consolă nodurile și muchiile
+                System.out.println("Nodes:");
+                for (GeneNode node : data.nodes) {
+                    System.out.println(" - " + node.symbol + " (" + node.type + ")");
+                }
+                System.out.println("Edges:");
+                for (GeneEdge edge : data.edges) {
+                    System.out.println(" - " + edge.source + " -> " + edge.target + " [" + edge.interaction + "]");
+                }
+
+                // Actualizează tab-ul Network: creează un nou Viewer și adaugă componenta grafică
+                networkPanel.removeAll();
+                Viewer viewer = createGraphViewer(data);
+                networkPanel.add(viewer.getDefaultView(), BorderLayout.CENTER);
+                networkPanel.revalidate();
+                networkPanel.repaint();
+
+                // Actualizează tab-ul Drug Repurposing: creează un nou JTable cu datele din CSV
+                drugPanel.removeAll();
+                // Înlocuiește calea cu cea corectă pentru fișierul tău CSV
+                Map<String, List<DrugInfo>> drugDB = loadDrugMapFromCSV(
+                        "/Users/paulgiurgiu/Documents/hackathon/nullPointers/src/main/resources/drug_repurposing_map.csv"
+                );
+                List<Object[]> rows = filterDrugsForGene(data, drugDB);
+                String[] columnNames = { "Gene", "Drug", "Indication", "Repurposing Score", "Mechanism" };
+                JTable table = new JTable(rows.toArray(new Object[0][]), columnNames);
+                table.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int row = table.rowAtPoint(e.getPoint());
+                        int col = table.columnAtPoint(e.getPoint());
+                        if (row >= 0 && col == 1) { // dacă se face clic pe coloana "Drug"
+                            String drugName = (String) table.getValueAt(row, col);
+                            String mechanism = (String) table.getValueAt(row, 4);
+                            JOptionPane.showMessageDialog(frame,
+                                    "Drug: " + drugName + "\nMechanism: " + mechanism,
+                                    "Drug Info", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                });
+                drugPanel.add(new JScrollPane(table), BorderLayout.CENTER);
+                drugPanel.revalidate();
+                drugPanel.repaint();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(frame, "Error: " + ex.getMessage());
             }
-            System.out.println("Edges:");
-            for (GeneEdge edge : data.edges) {
-                System.out.println(" - " + edge.source + " -> " + edge.target + " [" + edge.interaction + "]");
-            }
+        };
 
-    // Alege una dintre metode:
-            // 1. Afișează doar rețeaua:
-            // createGraphViewer(data);
-            // 2. Afișează doar tabelul cu medicamente:
-            //displayDrugRepurposingSuggestions(data);
-            // 3. Integrează rețeaua și tabelul într-un singur frame:
-            // Afișează rețeaua și sugestiile de reorientare a medicamentelor într-o interfață combinată.
-            displayNetworkAndDrugSuggestions(data);
+        // Încărcare inițială cu valorile implicite
+        loadData.run();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+        // Butonul "Load" actualizează datele conform valorilor din câmpurile de text
+        loadButton.addActionListener(e -> loadData.run());
+
+        frame.setVisible(true);
+    });
+}
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            // Creează fereastra principală
+//            JFrame frame = new JFrame("Gene Interaction Network");
+//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//            frame.setSize(1200, 800);
+//            frame.setLayout(new BorderLayout());
+//
+//            // Panou pentru input-ul utilizatorului
+//            JPanel inputPanel = new JPanel();
+//            JLabel keggLabel = new JLabel("KEGG ID:");
+//            JTextField keggField = new JTextField(10);
+//            JLabel symbolLabel = new JLabel("Gene Symbol:");
+//            JTextField symbolField = new JTextField(10);
+//            JButton loadButton = new JButton("Load");
+//
+//            inputPanel.add(keggLabel);
+//            inputPanel.add(keggField);
+//            inputPanel.add(symbolLabel);
+//            inputPanel.add(symbolField);
+//            inputPanel.add(loadButton);
+//
+//            // Panou pentru afișarea rețelei și a sugestiilor (aici folosim doar rețeaua)
+//            JPanel networkPanel = new JPanel(new BorderLayout());
+//
+//            // Adaugă panourile în fereastră
+//            frame.add(inputPanel, BorderLayout.NORTH);
+//            frame.add(networkPanel, BorderLayout.CENTER);
+//            frame.setVisible(true);
+//
+//            // La apăsarea butonului, se încarcă rețeaua pentru datele introduse
+//            loadButton.addActionListener(e -> {
+//                String geneKEGGId = keggField.getText().trim();
+//                String geneSymbol = symbolField.getText().trim();
+//
+//                if(geneKEGGId.isEmpty() || geneSymbol.isEmpty()){
+//                    JOptionPane.showMessageDialog(frame, "Vă rugăm să introduceți atât KEGG ID cât și Gene Symbol.");
+//                    return;
+//                }
+//
+//                try {
+//                    // Obține datele de interacțiune de la KEGG
+//                    InteractionData data = fetchKEGGInteractions(geneKEGGId, geneSymbol);
+//
+//                    // Șterge conținutul anterior al panoului (dacă există)
+//                    networkPanel.removeAll();
+//
+//                    // Creează vizualizarea grafică a rețelei
+//                    Viewer viewer = createGraphViewer(data);
+//                    // Obține componenta care reprezintă vizualizarea rețelei
+//                    java.awt.Component graphComponent = viewer.getDefaultView();
+//                    networkPanel.add(graphComponent, BorderLayout.CENTER);
+//
+//                    // Reafișează panoul
+//                    networkPanel.revalidate();
+//                    networkPanel.repaint();
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                    JOptionPane.showMessageDialog(frame, "Eroare: " + ex.getMessage());
+//                }
+//            });
+//        });
+//    }
 }
