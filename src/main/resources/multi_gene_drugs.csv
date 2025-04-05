@@ -1,0 +1,23 @@
+Gene,Drug,Disease,Mechanism
+KIT,Imatinib,Gastrointestinal stromal tumor,Tyrosine kinase inhibitor
+PDGFRA,Imatinib,Gastrointestinal stromal tumor,Tyrosine kinase inhibitor
+KITLG,Imatinib,Gastrointestinal stromal tumor,Tyrosine kinase inhibitor
+KIT,Sunitinib,Renal cell carcinoma,Multi-targeted TKI
+PDGFRA,Sunitinib,Renal cell carcinoma,Multi-targeted TKI
+VEGFA,Sunitinib,Renal cell carcinoma,VEGF inhibitor
+BRCA1,Tamoxifen,Breast cancer,Selective estrogen receptor modulator
+ESR1,Tamoxifen,Breast cancer,Selective estrogen receptor modulator
+BRCA1,Olaparib,Ovarian cancer,PARP inhibitor
+BRCA2,Olaparib,Ovarian cancer,PARP inhibitor
+EGFR,Lapatinib,Breast cancer,EGFR/HER2 inhibitor
+ERBB2,Lapatinib,Breast cancer,EGFR/HER2 inhibitor
+TP53,Idasanutlin,Acute myeloid leukemia,MDM2 inhibitor
+MDM2,Idasanutlin,Acute myeloid leukemia,MDM2 inhibitor
+MYC,JQ1,Multiple myeloma,BET bromodomain inhibitor
+BRD4,JQ1,Multiple myeloma,BET bromodomain inhibitor
+PIK3CA,Alpelisib,Breast cancer,PI3K inhibitor
+PTEN,Alpelisib,Breast cancer,PI3K pathway modulator
+ALK,Crizotinib,Non-small cell lung cancer,ALK inhibitor
+MET,Crizotinib,Non-small cell lung cancer,MET inhibitor
+FGFR1,Erdafitinib,Bladder cancer,FGFR inhibitor
+FGFR3,Erdafitinib,Bladder cancer,FGFR inhibitor

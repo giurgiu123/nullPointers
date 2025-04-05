@@ -1,0 +1,201 @@
+Gene,Drug,Disease,Mechanism
+KIT,Imatinib,Gastrointestinal stromal tumor,Tyrosine kinase inhibitor
+PDGFRA,Imatinib,Gastrointestinal stromal tumor,Tyrosine kinase inhibitor
+KITLG,Imatinib,Gastrointestinal stromal tumor,Tyrosine kinase inhibitor
+KIT,Sunitinib,Renal cell carcinoma,Multi-targeted TKI
+PDGFRA,Sunitinib,Renal cell carcinoma,Multi-targeted TKI
+VEGFA,Sunitinib,Renal cell carcinoma,VEGF inhibitor
+BRCA1,Tamoxifen,Breast cancer,Selective estrogen receptor modulator
+ESR1,Tamoxifen,Breast cancer,Selective estrogen receptor modulator
+BRCA1,Olaparib,Ovarian cancer,PARP inhibitor
+BRCA2,Olaparib,Ovarian cancer,PARP inhibitor
+EGFR,Lapatinib,Breast cancer,EGFR/HER2 inhibitor
+ERBB2,Lapatinib,Breast cancer,EGFR/HER2 inhibitor
+TP53,Idasanutlin,Acute myeloid leukemia,MDM2 inhibitor
+MDM2,Idasanutlin,Acute myeloid leukemia,MDM2 inhibitor
+MYC,JQ1,Multiple myeloma,BET bromodomain inhibitor
+PIK3CA,Alpelisib,Breast cancer,PI3K inhibitor
+PTEN,Alpelisib,Breast cancer,PI3K pathway modulator
+ALK,Crizotinib,Non-small cell lung cancer,ALK inhibitor
+MET,Crizotinib,Non-small cell lung cancer,MET inhibitor
+FGFR1,Erdafitinib,Bladder cancer,FGFR inhibitor
+FGFR3,Erdafitinib,Bladder cancer,FGFR inhibitor
+BRCA1,Tamoxifen,Breast cancer,Epigenetic modulator
+ESR1,Tamoxifen,Hematologic malignancy,VEGF pathway blocker
+FGFR1,Erdafitinib,Hematologic malignancy,Tyrosine kinase inhibitor
+FGFR1,Erdafitinib,Lung cancer,FGFR inhibitor
+ERBB2,Lapatinib,Cancer,CDK4/6 inhibitor
+ERBB2,Lapatinib,Prostate cancer,Selective estrogen modulator
+PDGFRA,Imatinib,Hematologic malignancy,PI3K inhibitor
+PDGFRA,Sunitinib,Lung cancer,PARP inhibitor
+PDGFRA,Sunitinib,Breast cancer,CDK4/6 inhibitor
+MET,Crizotinib,Thyroid cancer,Selective estrogen modulator
+ALK,Crizotinib,Brain tumor,Epigenetic modulator
+ERBB2,Lapatinib,Thyroid cancer,FGFR inhibitor
+EGFR,Lapatinib,Thyroid cancer,Epigenetic modulator
+ESR1,Tamoxifen,Hematologic malignancy,MEK inhibitor
+PTEN,Alpelisib,Prostate cancer,Selective estrogen modulator
+MYC,JQ1,Advanced cancer,Selective estrogen modulator
+ESR1,Tamoxifen,Refractory tumor,CDK4/6 inhibitor
+PDGFRA,Sunitinib,Pancreatic cancer,VEGF pathway blocker
+ESR1,Tamoxifen,Metastatic disease,PI3K inhibitor
+FGFR1,Erdafitinib,Metastatic disease,Epigenetic modulator
+ERBB2,Lapatinib,Brain tumor,Monoclonal antibody
+KITLG,Imatinib,Solid tumors,CDK4/6 inhibitor
+MET,Crizotinib,Hematologic malignancy,Selective estrogen modulator
+EGFR,Lapatinib,Hematologic malignancy,Tyrosine kinase inhibitor
+MYC,JQ1,Cancer,FGFR inhibitor
+TP53,Idasanutlin,Lung cancer,Epigenetic modulator
+MET,Crizotinib,Hematologic malignancy,PI3K inhibitor
+ESR1,Tamoxifen,Advanced cancer,Immune checkpoint inhibitor
+ALK,Crizotinib,Solid tumors,CDK4/6 inhibitor
+KIT,Imatinib,Brain tumor,Epigenetic modulator
+BRCA1,Tamoxifen,Metastatic disease,Selective estrogen modulator
+FGFR1,Erdafitinib,Lung cancer,PI3K inhibitor
+ERBB2,Lapatinib,Breast cancer,VEGF pathway blocker
+MYC,JQ1,Refractory tumor,Monoclonal antibody
+EGFR,Lapatinib,Prostate cancer,FGFR inhibitor
+KITLG,Imatinib,Solid tumors,Epigenetic modulator
+VEGFA,Sunitinib,Cancer,Androgen receptor antagonist
+VEGFA,Sunitinib,Cancer,MEK inhibitor
+ESR1,Tamoxifen,Breast cancer,Tyrosine kinase inhibitor
+BRCA2,Olaparib,Lung cancer,PARP inhibitor
+PTEN,Alpelisib,Pancreatic cancer,Monoclonal antibody
+KITLG,Imatinib,Lung cancer,FGFR inhibitor
+BRCA1,Tamoxifen,Breast cancer,Epigenetic modulator
+KIT,Sunitinib,Refractory tumor,PI3K inhibitor
+KIT,Sunitinib,Brain tumor,PI3K inhibitor
+ERBB2,Lapatinib,Lung cancer,PI3K inhibitor
+BRCA1,Olaparib,Solid tumors,PI3K inhibitor
+FGFR3,Erdafitinib,Refractory tumor,Monoclonal antibody
+EGFR,Lapatinib,Prostate cancer,PI3K inhibitor
+MET,Crizotinib,Metastatic disease,Selective estrogen modulator
+MDM2,Idasanutlin,Solid tumors,Tyrosine kinase inhibitor
+ALK,Crizotinib,Refractory tumor,PARP inhibitor
+PDGFRA,Sunitinib,Refractory tumor,Immune checkpoint inhibitor
+MYC,JQ1,Refractory tumor,Androgen receptor antagonist
+MYC,JQ1,Hematologic malignancy,CDK4/6 inhibitor
+BRCA2,Olaparib,Brain tumor,PARP inhibitor
+PTEN,Alpelisib,Hematologic malignancy,Monoclonal antibody
+ESR1,Tamoxifen,Lung cancer,MEK inhibitor
+ESR1,Tamoxifen,Lung cancer,Monoclonal antibody
+EGFR,Lapatinib,Brain tumor,Selective estrogen modulator
+MDM2,Idasanutlin,Prostate cancer,Selective estrogen modulator
+EGFR,Lapatinib,Prostate cancer,Epigenetic modulator
+ALK,Crizotinib,Advanced cancer,Androgen receptor antagonist
+PIK3CA,Alpelisib,Brain tumor,CDK4/6 inhibitor
+PDGFRA,Sunitinib,Hematologic malignancy,CDK4/6 inhibitor
+KIT,Imatinib,Metastatic disease,Monoclonal antibody
+KITLG,Imatinib,Hematologic malignancy,Epigenetic modulator
+FGFR1,Erdafitinib,Refractory tumor,MEK inhibitor
+PDGFRA,Sunitinib,Lung cancer,Androgen receptor antagonist
+TP53,Idasanutlin,Refractory tumor,Immune checkpoint inhibitor
+MYC,JQ1,Hematologic malignancy,FGFR inhibitor
+BRCA2,Olaparib,Metastatic disease,Selective estrogen modulator
+KIT,Sunitinib,Thyroid cancer,Immune checkpoint inhibitor
+MYC,JQ1,Advanced cancer,Epigenetic modulator
+PIK3CA,Alpelisib,Brain tumor,FGFR inhibitor
+KIT,Imatinib,Brain tumor,Epigenetic modulator
+ESR1,Tamoxifen,Cancer,PI3K inhibitor
+PTEN,Alpelisib,Pancreatic cancer,FGFR inhibitor
+MET,Crizotinib,Prostate cancer,PARP inhibitor
+ESR1,Tamoxifen,Advanced cancer,PI3K inhibitor
+KIT,Imatinib,Hematologic malignancy,CDK4/6 inhibitor
+KIT,Sunitinib,Metastatic disease,FGFR inhibitor
+BRCA1,Tamoxifen,Hematologic malignancy,Androgen receptor antagonist
+VEGFA,Sunitinib,Pancreatic cancer,Immune checkpoint inhibitor
+PIK3CA,Alpelisib,Pancreatic cancer,PI3K inhibitor
+KITLG,Imatinib,Metastatic disease,VEGF pathway blocker
+PDGFRA,Sunitinib,Prostate cancer,Monoclonal antibody
+PIK3CA,Alpelisib,Pancreatic cancer,MEK inhibitor
+BRCA1,Olaparib,Metastatic disease,PARP inhibitor
+KIT,Sunitinib,Thyroid cancer,Epigenetic modulator
+TP53,Idasanutlin,Refractory tumor,CDK4/6 inhibitor
+FGFR1,Erdafitinib,Lung cancer,PI3K inhibitor
+PTEN,Alpelisib,Brain tumor,Tyrosine kinase inhibitor
+PIK3CA,Alpelisib,Solid tumors,Epigenetic modulator
+VEGFA,Sunitinib,Prostate cancer,Monoclonal antibody
+ESR1,Tamoxifen,Metastatic disease,Monoclonal antibody
+BRCA1,Olaparib,Cancer,Androgen receptor antagonist
+FGFR1,Erdafitinib,Cancer,FGFR inhibitor
+VEGFA,Sunitinib,Advanced cancer,Androgen receptor antagonist
+KIT,Sunitinib,Brain tumor,CDK4/6 inhibitor
+BRCA1,Tamoxifen,Solid tumors,Selective estrogen modulator
+VEGFA,Sunitinib,Cancer,Selective estrogen modulator
+MYC,JQ1,Refractory tumor,Selective estrogen modulator
+FGFR1,Erdafitinib,Thyroid cancer,PARP inhibitor
+PDGFRA,Sunitinib,Metastatic disease,VEGF pathway blocker
+KIT,Imatinib,Pancreatic cancer,Monoclonal antibody
+TP53,Idasanutlin,Prostate cancer,PI3K inhibitor
+PTEN,Alpelisib,Breast cancer,Immune checkpoint inhibitor
+MYC,JQ1,Thyroid cancer,Epigenetic modulator
+ESR1,Tamoxifen,Cancer,Androgen receptor antagonist
+FGFR1,Erdafitinib,Brain tumor,FGFR inhibitor
+ERBB2,Lapatinib,Hematologic malignancy,Monoclonal antibody
+KIT,Imatinib,Pancreatic cancer,CDK4/6 inhibitor
+PTEN,Alpelisib,Lung cancer,CDK4/6 inhibitor
+BRCA2,Olaparib,Refractory tumor,Androgen receptor antagonist
+MDM2,Idasanutlin,Thyroid cancer,Androgen receptor antagonist
+KIT,Imatinib,Refractory tumor,Tyrosine kinase inhibitor
+ESR1,Tamoxifen,Advanced cancer,FGFR inhibitor
+ERBB2,Lapatinib,Brain tumor,Immune checkpoint inhibitor
+FGFR3,Erdafitinib,Brain tumor,MEK inhibitor
+BRCA1,Tamoxifen,Advanced cancer,Tyrosine kinase inhibitor
+EGFR,Lapatinib,Refractory tumor,CDK4/6 inhibitor
+BRCA2,Olaparib,Prostate cancer,MEK inhibitor
+TP53,Idasanutlin,Prostate cancer,PARP inhibitor
+ALK,Crizotinib,Hematologic malignancy,MEK inhibitor
+ESR1,Tamoxifen,Advanced cancer,PI3K inhibitor
+EGFR,Lapatinib,Cancer,CDK4/6 inhibitor
+MET,Crizotinib,Hematologic malignancy,Epigenetic modulator
+MET,Crizotinib,Refractory tumor,Androgen receptor antagonist
+MYC,JQ1,Thyroid cancer,Tyrosine kinase inhibitor
+PTEN,Alpelisib,Breast cancer,FGFR inhibitor
+BRCA1,Olaparib,Prostate cancer,CDK4/6 inhibitor
+KITLG,Imatinib,Brain tumor,VEGF pathway blocker
+BRCA1,Olaparib,Prostate cancer,Epigenetic modulator
+TP53,Idasanutlin,Lung cancer,VEGF pathway blocker
+FGFR1,Erdafitinib,Lung cancer,CDK4/6 inhibitor
+KITLG,Imatinib,Pancreatic cancer,CDK4/6 inhibitor
+MDM2,Idasanutlin,Prostate cancer,Selective estrogen modulator
+ESR1,Tamoxifen,Breast cancer,Androgen receptor antagonist
+VEGFA,Sunitinib,Prostate cancer,Selective estrogen modulator
+BRCA1,Tamoxifen,Hematologic malignancy,PI3K inhibitor
+PIK3CA,Alpelisib,Refractory tumor,FGFR inhibitor
+BRCA1,Tamoxifen,Lung cancer,CDK4/6 inhibitor
+KIT,Imatinib,Metastatic disease,Androgen receptor antagonist
+ERBB2,Lapatinib,Solid tumors,VEGF pathway blocker
+ERBB2,Lapatinib,Brain tumor,Selective estrogen modulator
+PDGFRA,Imatinib,Pancreatic cancer,Androgen receptor antagonist
+PIK3CA,Alpelisib,Solid tumors,Tyrosine kinase inhibitor
+KITLG,Imatinib,Solid tumors,CDK4/6 inhibitor
+BRCA1,Tamoxifen,Thyroid cancer,Selective estrogen modulator
+FGFR3,Erdafitinib,Solid tumors,MEK inhibitor
+EGFR,Lapatinib,Advanced cancer,PI3K inhibitor
+FGFR3,Erdafitinib,Refractory tumor,MEK inhibitor
+PTEN,Alpelisib,Hematologic malignancy,CDK4/6 inhibitor
+PDGFRA,Sunitinib,Cancer,Tyrosine kinase inhibitor
+BRCA1,Olaparib,Breast cancer,CDK4/6 inhibitor
+ESR1,Tamoxifen,Lung cancer,Epigenetic modulator
+FGFR3,Erdafitinib,Solid tumors,Androgen receptor antagonist
+ALK,Crizotinib,Lung cancer,PI3K inhibitor
+ALK,Crizotinib,Pancreatic cancer,PARP inhibitor
+PIK3CA,Alpelisib,Thyroid cancer,FGFR inhibitor
+MYC,JQ1,Hematologic malignancy,MEK inhibitor
+PDGFRA,Sunitinib,Breast cancer,PI3K inhibitor
+EGFR,Lapatinib,Metastatic disease,PARP inhibitor
+KIT,Sunitinib,Advanced cancer,Immune checkpoint inhibitor
+EGFR,Lapatinib,Brain tumor,PARP inhibitor
+ALK,Crizotinib,Brain tumor,Androgen receptor antagonist
+MET,Crizotinib,Pancreatic cancer,PI3K inhibitor
+ERBB2,Lapatinib,Refractory tumor,VEGF pathway blocker
+BRCA1,Tamoxifen,Breast cancer,Androgen receptor antagonist
+ERBB2,Lapatinib,Brain tumor,PARP inhibitor
+FGFR1,Erdafitinib,Refractory tumor,Androgen receptor antagonist
+KIT,Sunitinib,Pancreatic cancer,PARP inhibitor
+MDM2,Idasanutlin,Breast cancer,CDK4/6 inhibitor
+BRCA2,Olaparib,Brain tumor,Epigenetic modulator
+MET,Crizotinib,Lung cancer,MEK inhibitor
+EGFR,Lapatinib,Lung cancer,Immune checkpoint inhibitor
+BRCA1,Olaparib,Cancer,FGFR inhibitor
+VEGFA,Sunitinib,Prostate cancer,Monoclonal antibody
