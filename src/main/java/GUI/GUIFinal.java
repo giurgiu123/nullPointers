@@ -1,7 +1,9 @@
 package GUI;
 
 import Data.DbGene;
+import Data.DrugManipulator;
 import Data.GeneList;
+import DataModel.Drug;
 import DataModel.Gene;
 import javax.swing.*;
 
@@ -12,13 +14,14 @@ import org.graphstream.ui.view.Viewer;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.io.InputStream;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-public class GUIFinal {
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class GUIFinal implements DrugManipulator {
 
     private JTextField geneInput;
     private JButton exploreButton;
@@ -31,6 +34,10 @@ public class GUIFinal {
     private JSplitPane splitPane;
     private List<Gene> allGenes = new ArrayList<>();
     private GeneList geneList;
+    private JComboBox<String> drugComboBox;
+    private JButton showDrugGenesButton;
+    private Map<String, List<Drug>> drugToGeneMap = new HashMap<>();
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GUIFinal().createAndShowGUI());
@@ -336,5 +343,23 @@ public class GUIFinal {
             }
         }
         return common;
+    }
+
+
+    public List<Drug> readDrugData() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            InputStream input = getClass().getClassLoader().getResourceAsStream("src/main/resources/generated_gene_drug_summary.json");
+
+            if (input == null) {
+                throw new RuntimeException("Fișierul JSON nu a fost găsit în resources.");
+            }
+
+            List<Drug> drugs = mapper.readValue(input, new TypeReference<List<Drug>>() {});
+            return drugs;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
