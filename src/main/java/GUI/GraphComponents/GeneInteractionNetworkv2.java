@@ -176,7 +176,7 @@ public class GeneInteractionNetworkv2 {
                 Edge e = graph.addEdge(edge.id, edge.source, edge.target, true);
                 e.setAttribute("ui.label", edge.interaction);
             } catch (Exception ex) {
-                // muchia există deja, o ignorăm
+                ex.printStackTrace();
             }
         }
         Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
@@ -438,7 +438,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
                 DataModel.Gene gene2 = findGeneByName(allGenes, geneNames.get(j));
                 if (gene1 != null && gene2 != null && shareCommonPathway(gene1, gene2)) {
                     String edgeId = "e_" + gene1.getName() + "_" + gene2.getName();
-                    edges.add(new GeneEdge(edgeId, gene1.getName(), gene2.getName(), "common_pathway"));
+                    edges.add(new GeneEdge(edgeId, gene1.getName(), gene2.getName(), ""));
                 }
             }
         }

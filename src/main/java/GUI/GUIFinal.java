@@ -75,13 +75,23 @@ public class GUIFinal implements DrugManipulator {
         // Zona stângă: afișare informații despre genă
         geneOverviewArea = new JTextArea();
         geneOverviewArea.setEditable(false);
-        geneOverviewArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        geneOverviewArea.setFont(new Font("Times New Roman", Font.BOLD, 16));
         JScrollPane overviewScrollPane = new JScrollPane(geneOverviewArea);
         overviewScrollPane.setPreferredSize(new Dimension(400, 800));
 
-        // Zona dreaptă: pentru rețea și alte afișări
+        // Adăugăm GIF-ul (loading gif)
+        ImageIcon dnaGifIcon = new ImageIcon(getClass().getResource("/dna.gif"));
+        JLabel dnaGifLabel = new JLabel(dnaGifIcon, SwingConstants.CENTER);
+
+        // Panelul pentru rețea și alte afișări
         networkPanel = new JPanel(new BorderLayout());
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, overviewScrollPane, networkPanel);
+
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel.add(overviewScrollPane, BorderLayout.CENTER);
+        leftPanel.add(dnaGifLabel, BorderLayout.SOUTH);
+
+        // Creăm un splitPane cu leftPanel pentru zona din stânga și networkPanel pentru dreapta
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, networkPanel);
         splitPane.setDividerLocation(400);
 
         frame.setLayout(new BorderLayout());
@@ -351,6 +361,11 @@ public class GUIFinal implements DrugManipulator {
 
                 Object[][] tableData = rowData.toArray(new Object[0][]);
                 JTable table = new JTable(tableData, columnNames);
+                table.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+                table.setRowHeight(30);
+                table.setGridColor(new Color(200, 200, 200));
+                table.setShowGrid(true);
+                table.setSelectionBackground(new Color(0, 120, 215));
                 table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
                 JScrollPane scrollPane = new JScrollPane(table);
 
@@ -387,7 +402,6 @@ public class GUIFinal implements DrugManipulator {
                     }
                 });
 
-                // 🖱️ Click pe rând → popup cu detalii
                 table.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         int row = table.getSelectedRow();
@@ -415,7 +429,6 @@ public class GUIFinal implements DrugManipulator {
                     }
                 });
 
-                // 🔲 Fereastră cu căutare + tabel
                 JFrame tableFrame = new JFrame("All Drugs from JSON");
                 tableFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 tableFrame.setLayout(new BorderLayout());
