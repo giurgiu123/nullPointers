@@ -1,4 +1,4 @@
-package Data;
+package GUI;
 
 import org.graphstream.ui.graphicGraph.GraphicElement;
 import org.graphstream.ui.swingViewer.ViewPanel;
@@ -8,7 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -25,7 +24,6 @@ import org.graphstream.ui.view.Viewer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import scala.util.parsing.combinator.testing.Str;
 
 public class GeneInteractionNetworkv2 {
 
@@ -320,7 +318,7 @@ public class GeneInteractionNetworkv2 {
                                 gene.symbol,
                                 drug.drugName,        // numele medicamentului
                                 drug.indication,     // indicația terapeutică
-                                score,            // scor calculat în funcție de tipul genei
+                                (Object) score,            // scor calculat în funcție de tipul genei
                                 drug.mechanism    // mecanismul de acțiune
                         });
                     }
@@ -377,7 +375,7 @@ public class GeneInteractionNetworkv2 {
                             gene.symbol,
                             drug.drugName,
                             drug.indication,
-                            score,
+                            (Object) score,
                             drug.mechanism
                     });
                 }

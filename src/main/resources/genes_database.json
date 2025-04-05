@@ -1,0 +1,282 @@
+[
+    {
+        "keggId": "hsa:64285",
+        "organism": "Homo sapiens",
+        "chromosome": 7,
+        "name": "EGFR",
+        "description": "epidermal growth factor receptor",
+        "idlist": "1956"
+    },
+    {
+        "keggId": "hsa:27296",
+        "organism": "Homo sapiens",
+        "chromosome": 17,
+        "name": "TP53",
+        "description": "tumor protein p53",
+        "idlist": "7157"
+    },
+    {
+        "keggId": "hsa:4077",
+        "organism": "Homo sapiens",
+        "chromosome": 17,
+        "name": "BRCA1",
+        "description": "BRCA1 DNA repair associated",
+        "idlist": "672"
+    },
+    {
+        "keggId": "hsa:56647",
+        "organism": "Homo sapiens",
+        "chromosome": 13,
+        "name": "BRCA2",
+        "description": "BRCA2 DNA repair associated",
+        "idlist": "675"
+    },
+    {
+        "keggId": "hsa:152217",
+        "organism": "Homo sapiens",
+        "chromosome": 12,
+        "name": "KRAS",
+        "description": "KRAS proto-oncogene, GTPase",
+        "idlist": "3845"
+    },
+    {
+        "keggId": "hsa:10362",
+        "organism": "Homo sapiens",
+        "chromosome": 7,
+        "name": "BRAF",
+        "description": "B-Raf proto-oncogene, serine/threonine kinase",
+        "idlist": "673"
+    },
+    {
+        "keggId": "hsa:105379278",
+        "organism": "Homo sapiens",
+        "chromosome": 10,
+        "name": "PTEN",
+        "description": "phosphatase and tensin homolog",
+        "idlist": "5728"
+    },
+    {
+        "keggId": "hsa:84073",
+        "organism": "Homo sapiens",
+        "chromosome": 8,
+        "name": "MYC",
+        "description": "MYC proto-oncogene, bHLH transcription factor",
+        "idlist": "4609"
+    },
+    {
+        "keggId": "hsa:55602",
+        "organism": "Homo sapiens",
+        "chromosome": 9,
+        "name": "CDKN2A",
+        "description": "cyclin dependent kinase inhibitor 2A",
+        "idlist": "1029"
+    },
+    {
+        "keggId": "hsa:256710",
+        "organism": "Homo sapiens",
+        "chromosome": 2,
+        "name": "ALK",
+        "description": "ALK receptor tyrosine kinase",
+        "idlist": "238"
+    },
+    {
+        "keggId": "hsa:54826",
+        "organism": "Homo sapiens",
+        "chromosome": 10,
+        "name": "RET",
+        "description": "ret proto-oncogene",
+        "idlist": "5979"
+    },
+    {
+        "keggId": "hsa:129293",
+        "organism": "Homo sapiens",
+        "chromosome": 7,
+        "name": "MET",
+        "description": "MET proto-oncogene, receptor tyrosine kinase",
+        "idlist": "4233"
+    },
+    {
+        "keggId": "hsa:5290",
+        "organism": "Homo sapiens",
+        "chromosome": 3,
+        "name": "PIK3CA",
+        "description": "phosphatidylinositol-4,5-bisphosphate 3-kinase catalytic subunit alpha",
+        "idlist": "5290"
+    },
+    {
+        "keggId": "hsa:55914",
+        "organism": "Homo sapiens",
+        "chromosome": 17,
+        "name": "ERBB2",
+        "description": "erb-b2 receptor tyrosine kinase 2",
+        "idlist": "2064"
+    },
+    {
+        "keggId": "hsa:5156",
+        "organism": "Homo sapiens",
+        "chromosome": 4,
+        "name": "PDGFRA",
+        "description": "platelet derived growth factor receptor alpha",
+        "idlist": "5156"
+    },
+    {
+        "keggId": "hsa:3815",
+        "organism": "Homo sapiens",
+        "chromosome": 4,
+        "name": "KIT",
+        "description": "KIT proto-oncogene, receptor tyrosine kinase",
+        "idlist": "3815"
+    },
+    {
+        "keggId": "hsa:26127",
+        "organism": "Homo sapiens",
+        "chromosome": 8,
+        "name": "FGFR1",
+        "description": "fibroblast growth factor receptor 1",
+        "idlist": "2260"
+    },
+    {
+        "keggId": "hsa:2263",
+        "organism": "Homo sapiens",
+        "chromosome": 10,
+        "name": "FGFR2",
+        "description": "fibroblast growth factor receptor 2",
+        "idlist": "2263"
+    },
+    {
+        "keggId": "hsa:2261",
+        "organism": "Homo sapiens",
+        "chromosome": 4,
+        "name": "FGFR3",
+        "description": "fibroblast growth factor receptor 3",
+        "idlist": "2261"
+    },
+    {
+        "keggId": "hsa:22984",
+        "organism": "Homo sapiens",
+        "chromosome": 2,
+        "name": "PDCD1",
+        "description": "programmed cell death 1",
+        "idlist": "5133"
+    },
+    {
+        "keggId": "hsa:29126",
+        "organism": "Homo sapiens",
+        "chromosome": 9,
+        "name": "CD274",
+        "description": "CD274 molecule",
+        "idlist": "29126"
+    },
+    {
+        "keggId": "hsa:84668",
+        "organism": "Homo sapiens",
+        "chromosome": 3,
+        "name": "CTNNB1",
+        "description": "catenin beta 1",
+        "idlist": "1499"
+    },
+    {
+        "keggId": "hsa:4089",
+        "organism": "Homo sapiens",
+        "chromosome": 18,
+        "name": "SMAD4",
+        "description": "SMAD family member 4",
+        "idlist": "4089"
+    },
+    {
+        "keggId": "hsa:221061",
+        "organism": "Homo sapiens",
+        "chromosome": 5,
+        "name": "APC",
+        "description": "APC regulator of WNT signaling pathway",
+        "idlist": "324"
+    },
+    {
+        "keggId": "hsa:4193",
+        "organism": "Homo sapiens",
+        "chromosome": 12,
+        "name": "MDM2",
+        "description": "MDM2 proto-oncogene",
+        "idlist": "4193"
+    },
+    {
+        "keggId": "hsa:728419",
+        "organism": "Homo sapiens",
+        "chromosome": 0,
+        "name": "AR",
+        "description": "androgen receptor",
+        "idlist": "367"
+    },
+    {
+        "keggId": "hsa:285381",
+        "organism": "Homo sapiens",
+        "chromosome": 6,
+        "name": "ESR1",
+        "description": "estrogen receptor 1",
+        "idlist": "2099"
+    },
+    {
+        "keggId": "hsa:4524",
+        "organism": "Homo sapiens",
+        "chromosome": 1,
+        "name": "MTHFR",
+        "description": "methylenetetrahydrofolate reductase",
+        "idlist": "4524"
+    },
+    {
+        "keggId": "hsa:107987479",
+        "organism": "Homo sapiens",
+        "chromosome": 22,
+        "name": "CYP2D6",
+        "description": "cytochrome P450 family 2 subfamily D member 6 (gene/pseudogene)",
+        "idlist": "1565"
+    },
+    {
+        "keggId": "hsa:7422",
+        "organism": "Homo sapiens",
+        "chromosome": 6,
+        "name": "VEGFA",
+        "description": "vascular endothelial growth factor A",
+        "idlist": "7422"
+    },
+    {
+        "keggId": "hsa:2264",
+        "organism": "Homo sapiens",
+        "chromosome": 5,
+        "name": "FGFR4",
+        "description": "fibroblast growth factor receptor 4",
+        "idlist": "2264"
+    },
+    {
+        "keggId": "hsa:4254",
+        "organism": "Homo sapiens",
+        "chromosome": 12,
+        "name": "KITLG",
+        "description": "KIT ligand",
+        "idlist": "4254"
+    },
+    {
+        "keggId": "hsa:6597",
+        "organism": "Homo sapiens",
+        "chromosome": 19,
+        "name": "SMARCA4",
+        "description": "SWI/SNF related BAF chromatin remodeling complex subunit ATPase 4",
+        "idlist": "6597"
+    },
+    {
+        "keggId": "hsa:4851",
+        "organism": "Homo sapiens",
+        "chromosome": 9,
+        "name": "NOTCH1",
+        "description": "notch receptor 1",
+        "idlist": "4851"
+    },
+    {
+        "keggId": "hsa:51384",
+        "organism": "Homo sapiens",
+        "chromosome": 12,
+        "name": "WNT1",
+        "description": "Wnt family member 1",
+        "idlist": "7471"
+    }
+]

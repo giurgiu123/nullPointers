@@ -1,4 +1,4 @@
-package Data;
+package GUI;
 
 
 
@@ -8,8 +8,6 @@ import org.graphstream.graph.Edge;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.graphicGraph.GraphicElement;
-import org.json.JSONObject;
-import org.json.JSONArray;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;

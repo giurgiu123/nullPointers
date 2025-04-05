@@ -1,11 +1,8 @@
-package Data;
+package GUI;
 
 
 
-import Data.GeneInteractionNetworkv2.*;
-import Data.GeneInteractionNetworkv2;
-import Data.GeneOverview;
-import org.graphstream.graph.implementations.SingleGraph;
+import GUI.GeneInteractionNetworkv2.*;
 import org.graphstream.ui.view.Viewer;
 
 import javax.swing.*;
@@ -106,7 +103,7 @@ public class GeneExplorerUIv2 {
                 networkPanel.revalidate();
 
                 // 💊 Step 5: Fill drug table
-                Map<String,List<DrugInfo>> drugDB = GeneInteractionNetworkv2.loadDrugMapFromCSV("drug_repurposing_map.csv");
+                Map<String,List<DrugInfo>> drugDB = GeneInteractionNetworkv2.loadDrugMapFromCSV("src/main/resources/drug_repurposing_map.csv");
                 List<Object[]> rows = GeneInteractionNetworkv2.filterDrugsForGene(data, drugDB);
                 String[] headers = { "Gene", "Drug", "Indication", "Score", "Mechanism" };
                 Object[][] tableData = rows.toArray(new Object[0][]);
@@ -121,5 +118,6 @@ public class GeneExplorerUIv2 {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(GeneExplorerUI::new);
+        //to do fisier cu acele gene si sa fie si asemena
     }
 }
