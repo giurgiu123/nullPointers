@@ -141,11 +141,10 @@
 //        });
 //    }
 //}
-package Data;
+package GUI;
 
 import org.graphstream.ui.swingViewer.ViewPanel;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
