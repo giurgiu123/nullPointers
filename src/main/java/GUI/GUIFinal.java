@@ -6,6 +6,10 @@ import Data.GeneList;
 import DataModel.Drug;
 import DataModel.Gene;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import GUI.GraphComponents.GeneInteractionNetworkv2;
 import GUI.GraphComponents.InteractionData;
@@ -37,6 +41,7 @@ public class GUIFinal implements DrugManipulator {
     private JComboBox<String> drugComboBox;
     private JButton showDrugGenesButton;
     private Map<String, List<Drug>> drugToGeneMap = new HashMap<>();
+    JButton showAllDrugsButton;
 
 
     public static void main(String[] args) {
@@ -64,6 +69,8 @@ public class GUIFinal implements DrugManipulator {
         topPanel.add(detailsButton);
         topPanel.add(similarButton);
         topPanel.add(showPathwaysButton);
+        showAllDrugsButton = new JButton("Show Related Drugs");
+        topPanel.add(showAllDrugsButton);
 
         // Zona stângă: afișare informații despre genă
         geneOverviewArea = new JTextArea();
@@ -210,52 +217,218 @@ public class GUIFinal implements DrugManipulator {
 
         // Butonul "Show Pathways": afișează un dialog cu un combo box ce conține toate pathway-urile din obiectul Gene
         showPathwaysButton.addActionListener(e -> {
-            SwingUtilities.invokeLater(() -> {
-                String inputGeneSymbol = geneInput.getText().trim();
-                if (inputGeneSymbol.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Please enter a gene symbol first.");
-                    return;
-                }
-                Gene selectedGene = findGeneByName(allGenes, inputGeneSymbol);
-                if (selectedGene == null) {
-                    JOptionPane.showMessageDialog(null, "Gene not found in the database!");
-                    return;
-                }
-                if (selectedGene.getPathWays().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "No pathways found for gene " + selectedGene.getName());
-                    return;
-                }
-                // Creează un array cu codurile pathway-urilor din obiectul Gene
-                String[] pathwayOptions = selectedGene.getPathWays().stream()
-                        .map(p -> p.getPath())
-                        .toArray(String[]::new);
-                String selectedPathway = (String) JOptionPane.showInputDialog(
-                        null,
-                        "Select a pathway:",
-                        "Pathway Selection",
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        pathwayOptions,
-                        pathwayOptions[0]
-                );
-                if (selectedPathway != null) {
-                    JOptionPane.showMessageDialog(null, "You selected pathway: " + selectedPathway);
-                    // Aici se poate apela metoda de generare a grafului pe baza KGML pentru pathway-ul selectat.
+            String inputGeneSymbol = geneInput.getText().trim();
+            if (inputGeneSymbol.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter a gene symbol first.");
+                return;
+            }
 
+            Gene selectedGene = findGeneByName(allGenes, inputGeneSymbol);
+            if (selectedGene == null) {
+                JOptionPane.showMessageDialog(null, "Gene not found in the database!");
+                return;
+            }
+
+            if (selectedGene.getPathWays().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No pathways found for gene " + selectedGene.getName());
+                return;
+            }
+
+            // Selectarea pathway-ului
+            String[] pathwayOptions = selectedGene.getPathWays().stream()
+                    .map(p -> p.getPath())
+                    .toArray(String[]::new);
+            String selectedPathway = (String) JOptionPane.showInputDialog(
+                    null,
+                    "Select a pathway:",
+                    "Pathway Selection",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    pathwayOptions,
+                    pathwayOptions[0]
+            );
+
+            if (selectedPathway == null) return;
+
+            // ----- INTERFAȚĂ DE LOADING CU BARA DE PROGRES -----
+            // ----- INTERFAȚĂ DE LOADING CU BARĂ ALBASTRĂ, TEXT ȘI GIF MIC -----
+            JDialog loadingDialog = new JDialog((Frame) null, "Loading Graph", true);
+            loadingDialog.setUndecorated(false);
+            JPanel panel = new JPanel(new BorderLayout(10, 10));
+            panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+// Icon animat (GIF mic de loading) - din resources
+            ImageIcon loadingIcon = new ImageIcon(getClass().getResource("/loading.gif"));
+            JLabel iconLabel = new JLabel(loadingIcon, SwingConstants.CENTER);
+
+// Text status
+            JLabel statusLabel = new JLabel("Loading graph for " + selectedPathway + "...", SwingConstants.CENTER);
+
+// Bara de progres albastră
+            JProgressBar progressBar = new JProgressBar(0, 100);
+            progressBar.setValue(0);
+            progressBar.setStringPainted(true);
+            progressBar.setForeground(new Color(0, 120, 215)); // albastru
+
+// Asamblare
+            panel.add(iconLabel, BorderLayout.NORTH);
+            panel.add(statusLabel, BorderLayout.CENTER);
+            panel.add(progressBar, BorderLayout.SOUTH);
+
+            loadingDialog.getContentPane().add(panel);
+            loadingDialog.setSize(350, 140);
+            loadingDialog.setLocationRelativeTo(null);
+            loadingDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
+// ---- TASK + ANIMARE ----
+            SwingWorker<Component, Void> graphWorker = new SwingWorker<>() {
+                private Component graphComponent;
+
+                @Override
+                protected Component doInBackground() throws Exception {
+                    for (int i = 0; i <= 100; i++) {
+                        Thread.sleep(150); // smooth anim
+                        int progress = i;
+                        SwingUtilities.invokeLater(() -> {
+                            progressBar.setValue(progress);
+                            if (progress >= 80) {
+                                statusLabel.setText("Almost done...");
+                            }
+                        });
+                    }
+
+                    graphComponent = GeneInteractionNetworkv2.createKGMLGraph(selectedPathway);
+                    return graphComponent;
+                }
+
+                @Override
+                protected void done() {
+                    loadingDialog.dispose();
                     try {
-                        Component graphComponent = GeneInteractionNetworkv2.createKGMLGraph(selectedPathway);
-                        // Afișează graful într-o fereastră nouă integrată într-un panou
+                        Component graph = get();
                         JFrame graphFrame = new JFrame("KGML Graph - " + selectedPathway);
                         graphFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        graphFrame.add(graphComponent, BorderLayout.CENTER);
+                        graphFrame.add(graph, BorderLayout.CENTER);
                         graphFrame.setSize(1200, 800);
+                        graphFrame.setLocationRelativeTo(null);
                         graphFrame.setVisible(true);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         JOptionPane.showMessageDialog(null, "Error generating graph: " + ex.getMessage());
                     }
                 }
-            });
+            };
+
+            graphWorker.execute();
+            loadingDialog.setVisible(true);
+        });
+        showAllDrugsButton.addActionListener(e -> {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("generated_gene_drug_summary.json");
+
+                if (inputStream == null) {
+                    JOptionPane.showMessageDialog(null, "JSON file not found.");
+                    return;
+                }
+
+                List<Map<String, Object>> drugs = mapper.readValue(inputStream, new TypeReference<>() {});
+                if (drugs.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No drugs found in the JSON.");
+                    return;
+                }
+
+                String[] columnNames = {"Drug", "Genes", "Diseases", "Mechanisms"};
+                List<Object[]> rowData = new ArrayList<>();
+
+                for (Map<String, Object> drug : drugs) {
+                    String drugName = (String) drug.get("Drug");
+                    String genes = String.join(", ", (List<String>) drug.get("Gene"));
+                    String diseases = String.join(", ", (List<String>) drug.get("Disease"));
+                    String mechanisms = String.join(", ", (List<String>) drug.get("Mechanism"));
+                    rowData.add(new Object[]{drugName, genes, diseases, mechanisms});
+                }
+
+                Object[][] tableData = rowData.toArray(new Object[0][]);
+                JTable table = new JTable(tableData, columnNames);
+                table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+                JScrollPane scrollPane = new JScrollPane(table);
+
+                // 🔍 Căsuță de căutare
+                JTextField searchField = new JTextField(30);
+                JLabel searchLabel = new JLabel("Search:");
+                JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                searchPanel.add(searchLabel);
+                searchPanel.add(searchField);
+
+                TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(table.getModel());
+                table.setRowSorter(rowSorter);
+
+                searchField.getDocument().addDocumentListener(new DocumentListener() {
+                    public void insertUpdate(DocumentEvent e) {
+                        filter();
+                    }
+
+                    public void removeUpdate(DocumentEvent e) {
+                        filter();
+                    }
+
+                    public void changedUpdate(DocumentEvent e) {
+                        filter();
+                    }
+
+                    private void filter() {
+                        String text = searchField.getText().trim();
+                        if (text.length() == 0) {
+                            rowSorter.setRowFilter(null);
+                        } else {
+                            rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                        }
+                    }
+                });
+
+                // 🖱️ Click pe rând → popup cu detalii
+                table.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        int row = table.getSelectedRow();
+                        if (row >= 0) {
+                            int modelRow = table.convertRowIndexToModel(row);
+                            String drugName = (String) table.getModel().getValueAt(modelRow, 0);
+                            String geneList = (String) table.getModel().getValueAt(modelRow, 1);
+                            String diseaseList = (String) table.getModel().getValueAt(modelRow, 2);
+                            String mechList = (String) table.getModel().getValueAt(modelRow, 3);
+
+                            JTextArea detailArea = new JTextArea(
+                                    "Drug: " + drugName + "\n\n" +
+                                            "Genes:\n" + geneList + "\n\n" +
+                                            "Diseases:\n" + diseaseList + "\n\n" +
+                                            "Mechanisms:\n" + mechList
+                            );
+                            detailArea.setEditable(false);
+                            detailArea.setLineWrap(true);
+                            detailArea.setWrapStyleWord(true);
+                            JScrollPane detailScroll = new JScrollPane(detailArea);
+                            detailScroll.setPreferredSize(new Dimension(500, 300));
+
+                            JOptionPane.showMessageDialog(null, detailScroll, "Drug Details", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                });
+
+                // 🔲 Fereastră cu căutare + tabel
+                JFrame tableFrame = new JFrame("All Drugs from JSON");
+                tableFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                tableFrame.setLayout(new BorderLayout());
+                tableFrame.add(searchPanel, BorderLayout.NORTH);
+                tableFrame.add(scrollPane, BorderLayout.CENTER);
+                tableFrame.setSize(1000, 500);
+                tableFrame.setLocationRelativeTo(null);
+                tableFrame.setVisible(true);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+            }
         });
 
         frame.setVisible(true);
