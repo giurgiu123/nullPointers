@@ -155,7 +155,7 @@ public class GeneInteractionNetworkv2 {
         // ✔ Stil grafic pentru noduri și muchii
         String styleSheet = ""
                 + "graph { padding: 50px; }"
-                + "node { fill-color: #61bffc; size: 30px; text-size: 12; text-alignment: under; stroke-mode: plain; stroke-color: #444; stroke-width: 1.5px; }"
+                + "node { fill-color: #61bffc; size: 30px; text-size: 20; text-alignment: under; stroke-mode: plain; stroke-color: #444; stroke-width: 1.5px; }"
                 + "node.central { fill-color: #aaffaa; shape: diamond; }"
                 + "node.similar { fill-color: #ffaaaa; }"
                 + "node.related { fill-color: #ffc107; }"
@@ -555,7 +555,16 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
         }
         return drugMap;
     }
-
+    private static void stylizeTable(JTable table) {
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        table.setRowHeight(28);
+        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        table.getTableHeader().setBackground(new Color(230, 230, 230));
+        table.setGridColor(new Color(220, 220, 220));
+        table.setSelectionBackground(new Color(0, 120, 215));
+        table.setShowHorizontalLines(true);
+        table.setShowVerticalLines(false);
+    }
     // Metodă utilitară pentru a uni elementele unui JSONArray într-un singur string
     private static String joinJSONArray(JSONArray array, String delimiter) {
         List<String> list = new ArrayList<>();
@@ -610,6 +619,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
                 return false; // toate celulele devin non-editabile
             }
         });
+        stylizeTable(table);
 
         table.addMouseListener(new MouseAdapter() {
             @Override

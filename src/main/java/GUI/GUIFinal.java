@@ -48,6 +48,31 @@ public class GUIFinal implements DrugManipulator {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GUIFinal().createAndShowGUI());
     }
+    private void stylizeButton(JButton button) {
+        button.setBackground(new Color(0, 120, 215));
+        button.setForeground(Color.BLACK);
+        button.setFocusPainted(false);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
+    }
+
+    private void stylizeTable(JTable table) {
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        table.setRowHeight(28);
+        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        table.getTableHeader().setBackground(new Color(230, 230, 230));
+        table.setGridColor(new Color(220, 220, 220));
+        table.setSelectionBackground(new Color(0, 120, 215));
+        table.setShowHorizontalLines(true);
+        table.setShowVerticalLines(false);
+    }
+
+    private void stylizeSearchField(JTextField field) {
+        field.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        field.setPreferredSize(new Dimension(300, 28));
+        field.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180), 1));
+    }
 
     public void createAndShowGUI() {
         this.geneList  = new DbGene();
@@ -72,7 +97,11 @@ public class GUIFinal implements DrugManipulator {
         topPanel.add(showPathwaysButton);
         showAllDrugsButton = new JButton("Show Related Drugs");
         topPanel.add(showAllDrugsButton);
-
+        stylizeButton(exploreButton);
+        stylizeButton(detailsButton);
+        stylizeButton(similarButton);
+        stylizeButton(showPathwaysButton);
+        stylizeButton(showAllDrugsButton);
         // Zona stângă: afișare informații despre genă
         geneOverviewArea = new JTextArea();
         geneOverviewArea.setEditable(false);
@@ -99,6 +128,12 @@ public class GUIFinal implements DrugManipulator {
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(splitPane, BorderLayout.CENTER);
 
+        frame.getContentPane().setBackground(Color.WHITE);
+        topPanel.setBackground(new Color(245, 245, 245));
+        networkPanel.setBackground(Color.WHITE);
+        leftPanel.setBackground(Color.WHITE);
+        geneOverviewArea.setBackground(new Color(250, 250, 250));
+        geneOverviewArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         // Acțiunea butonului "Explore"
         exploreButton.addActionListener(e -> {
             String geneSymbol = geneInput.getText().trim();
@@ -221,6 +256,7 @@ public class GUIFinal implements DrugManipulator {
                         return false; // toate celulele sunt doar pentru afișare
                     }
                 });
+                stylizeTable(similarityTable);
                 similarityTable.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -393,6 +429,7 @@ public class GUIFinal implements DrugManipulator {
                         return false; // toate celulele sunt doar pentru afișare
                     }
                 };
+                stylizeTable(table);
                 table.setFont(new Font("Times New Roman", Font.PLAIN, 12));
                 table.setRowHeight(30);
                 table.setGridColor(new Color(200, 200, 200));
@@ -403,8 +440,10 @@ public class GUIFinal implements DrugManipulator {
 
                 // 🔍 Căsuță de căutare
                 JTextField searchField = new JTextField(30);
+                stylizeSearchField(searchField);
                 JLabel searchLabel = new JLabel("Search:");
                 JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
                 searchPanel.add(searchLabel);
                 searchPanel.add(searchField);
 
@@ -503,6 +542,7 @@ public class GUIFinal implements DrugManipulator {
                         return false; // toate celulele sunt doar pentru afișare
                     }
                 };
+                stylizeTable(drugTable);
                 drugTable.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
