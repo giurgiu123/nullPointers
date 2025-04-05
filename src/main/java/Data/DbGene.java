@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DbGene {
+public class DbGene implements GeneList {
 
     // Lista de gene pe care vrem să le preluăm
     List<String> geneNames = Arrays.asList("EGFR", "TP53", "BRCA1", "BRCA2", "KRAS", "BRAF", "PTEN", "MYC", "CDKN2A", "ALK", "RET", "MET", "PIK3CA", "ERBB2", "PDGFRA",

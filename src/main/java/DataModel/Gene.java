@@ -33,14 +33,12 @@ public class Gene {
 
     @Override
     public String toString() {
-        return "Gene {" +
-                "\n  name='" + name + '\'' +
-                ",\n  description='" + description + '\'' +
-                ",\n  chromosome=" + nrChromosome +
-                ",\n  organism='" + organism + '\'' +
-                ",\n  keggId='" + keggId + '\'' +
-                ",\n  idlist='" + idlist + '\'' +  // Afișăm idlist-ul
-                "\n}";
+        return "Gene name='" + name + '\'' +
+                ",\n description='" + description + '\'' +
+                ",\n chromosome=" + nrChromosome +
+                ",\n organism='" + organism + '\'' +
+                ",\n keggId='" + keggId + '\'' +
+                ",\n idlist='" + idlist + '\'' ;  // Afișăm idlist-ul
     }
 
     @Override

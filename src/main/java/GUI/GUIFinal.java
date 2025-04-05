@@ -516,6 +516,8 @@
 //}
 package GUI;
 
+import Data.DbGene;
+import Data.GeneList;
 import DataModel.PathWay;
 import GUI.GeneInteractionNetworkv2;
 import GUI.GeneInteractionNetworkv2.DrugInfo;
@@ -544,16 +546,16 @@ public class GUIFinal {
     private JPanel networkPanel;
     private JScrollPane drugScrollPane;
     private JSplitPane splitPane;
-    private List<Gene> allGenes; // Lista de gene încărcată din JSON
+    private List<Gene> allGenes = new ArrayList<>();
+    private GeneList geneList;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GUIFinal().createAndShowGUI());
     }
 
     public void createAndShowGUI() {
-        // Încarcă lista de gene (de exemplu, din DbGene)
-        Data.DbGene dbGene = new Data.DbGene();
-        allGenes = dbGene.getGenesFromJsonFile();
+        this.geneList  = new DbGene();
+        this.allGenes = geneList.getGenesFromJsonFile();
 
         JFrame frame = new JFrame("Gene Explorer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -785,7 +787,7 @@ public class GUIFinal {
                 viewPanel.setPreferredSize(new Dimension(700, 600));
                 Map<String, List<DrugInfo>> drugMap = GeneInteractionNetworkv2.loadDrugMapFromJSON("src/main/resources/generated_gene_drug_summary.json");
                 List<Object[]> drugRows = GeneInteractionNetworkv2.filterDrugsForGene(data, drugMap);
-                String[] columnNames = {"Gene", "Drug", "Indication", "Score", "Mechanism"};
+                String[] columnNames = {"Gene", "Drug", "Indication", "Mechanism"};
                 JTable drugTable = new JTable(drugRows.toArray(new Object[0][]), columnNames);
                 drugTable.addMouseListener(new MouseAdapter() {
                     @Override
@@ -794,7 +796,7 @@ public class GUIFinal {
                         int col = drugTable.columnAtPoint(e.getPoint());
                         if (row >= 0 && col == 1) {
                             String drug = (String) drugTable.getValueAt(row, col);
-                            String mech = (String) drugTable.getValueAt(row, 4);
+                            String mech = (String) drugTable.getValueAt(row, 3);
                             JOptionPane.showMessageDialog(null, "Drug: " + drug + "\nMechanism: " + mech,
                                     "Drug Info", JOptionPane.INFORMATION_MESSAGE);
                         }

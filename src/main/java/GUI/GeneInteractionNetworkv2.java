@@ -1401,25 +1401,8 @@ public class GeneInteractionNetworkv2 {
         for (GeneNode gene : data.nodes) {
             List<DrugInfo> drugs = drugDB.get(gene.symbol);
             if (drugs != null) {
-                int score = 0;
-                switch (gene.type) {
-                    case "central":
-                        score = 0;
-                        break;
-                    case "interactor":
-                        score = 5;
-                        break;
-                    case "similar":
-                        score = 10;
-                        break;
-                    case "related":
-                        score = 7;
-                        break;
-                    default:
-                        score = 0;
-                }
                 for (DrugInfo drug : drugs) {
-                    rows.add(new Object[]{gene.symbol, drug.drugName, drug.indication, score, drug.mechanism});
+                    rows.add(new Object[]{gene.symbol, drug.drugName, drug.indication, drug.mechanism});
                 }
             }
         }

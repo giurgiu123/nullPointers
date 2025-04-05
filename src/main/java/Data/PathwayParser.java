@@ -17,7 +17,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class PathwayParser {
+public class PathwayParser implements GetParsePath{
 
     // Atribut pentru o genă (poate fi folosit pentru referință)
     private String gene;
