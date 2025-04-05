@@ -11,4 +11,12 @@ public class GeneEdge {
         this.target = target;
         this.interaction = interaction;
     }
+
+    public String getFrom() {
+        return source;
+    }
+
+    public String getTo() {
+        return target;
+    }
 }

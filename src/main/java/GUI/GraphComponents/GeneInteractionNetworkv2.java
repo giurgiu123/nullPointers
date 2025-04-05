@@ -3,6 +3,7 @@ package GUI.GraphComponents;
 
 import Data.PathwayParser;
 import DataModel.Entry;
+import DataModel.GraphicsEntry;
 import DataModel.Relation;
 import GUI.DrugInfo;
 import org.graphstream.ui.graphicGraph.GraphicElement;
@@ -19,6 +20,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -222,6 +224,126 @@ public class GeneInteractionNetworkv2 {
 
         return viewer;
     }
+//    public static Component createKGMLGraph(String pathwayId) throws Exception {
+//        PathwayParser parser = new PathwayParser("dummyGene");
+//        List<Entry> entries = parser.parseKGML(pathwayId);
+//        List<Relation> relations = parser.parseRelations(pathwayId);
+//
+//        List<GeneNode> nodes = new ArrayList<>();
+//        Map<String, GeneNode> nodeMap = new HashMap<>();
+//        for (Entry e : entries) {
+//            GeneNode gn = new GeneNode(e.getId(), e.getName(), e.getType());
+//            nodes.add(gn);
+//            nodeMap.put(e.getId(), gn);
+//        }
+//
+//        List<GeneEdge> edges = new ArrayList<>();
+//        for (Relation r : relations) {
+//            String id1 = r.getEntry1().getId();
+//            String id2 = r.getEntry2().getId();
+//            if (nodeMap.containsKey(id1) && nodeMap.containsKey(id2)) {
+//                GeneEdge ge = new GeneEdge("r" + id1 + "_" + id2, id1, id2, r.getRelationType());
+//                edges.add(ge);
+//            }
+//        }
+//        InteractionData data = new InteractionData(nodes, edges);
+//        return createGraphViewer(data).getDefaultView();
+//    }
+private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
+    for (GeneNode node : nodes) {
+        double dx = p.x - node.getX();
+        double dy = p.y - node.getY();
+        if (Math.sqrt(dx * dx + dy * dy) <= 12) {
+            return node;
+        }
+    }
+    return null;
+}
+
+    private static GeneNode getNodeById(List<GeneNode> nodes, String id) {
+        for (GeneNode node : nodes) {
+            if (node.getId().equals(id)) return node;
+        }
+        return null;
+    }
+    public static JComponent createHoverableGraphViewer(InteractionData data) {
+        List<GeneNode> nodes = data.getNodes();
+        List<GeneEdge> edges = data.getEdges();
+
+        JPanel panel = new JPanel() {
+            GeneNode hoveredNode = null;
+
+            {
+                setToolTipText("");
+                addMouseMotionListener(new MouseMotionAdapter() {
+                    @Override
+                    public void mouseMoved(MouseEvent e) {
+                        Point p = e.getPoint();
+                        GeneNode newHovered = findNodeAt(p, nodes);
+                        if (newHovered != hoveredNode) {
+                            hoveredNode = newHovered;
+                            if (hoveredNode != null) {
+                                setToolTipText("Type: " + hoveredNode.getType());
+                            } else {
+                                setToolTipText(null);
+                            }
+                            repaint();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // Desenează muchiile
+                for (GeneEdge edge : edges) {
+                    GeneNode src = getNodeById(nodes, edge.getFrom());
+                    GeneNode tgt = getNodeById(nodes, edge.getTo());
+                    if (src != null && tgt != null) {
+                        g2.setColor(Color.LIGHT_GRAY);
+                        g2.drawLine(src.getX(), src.getY(), tgt.getX(), tgt.getY());
+                    }
+                }
+
+                // Desenează nodurile
+                for (GeneNode node : nodes) {
+                    Color nodeColor = node.getColor();
+                    if (node.equals(hoveredNode)) {
+                        g2.setColor(nodeColor.darker());
+                        g2.fillOval(node.getX() - 12, node.getY() - 12, 24, 24);
+                    } else {
+                        g2.setColor(nodeColor);
+                        g2.fillOval(node.getX() - 10, node.getY() - 10, 20, 20);
+                    }
+                }
+
+                // 🎨 Desenează legenda în colțul din stânga-jos
+                int legendX = 20;
+                int legendY = getHeight() - 90;
+
+                g2.setColor(Color.BLACK);
+                g2.drawString("Legend:", legendX, legendY);
+
+                drawLegendItem(g2, legendX, legendY + 20, new Color(128, 0, 128), "Inhibition");
+                drawLegendItem(g2, legendX, legendY + 40, new Color(0, 180, 0), "Activation");
+                drawLegendItem(g2, legendX, legendY + 60, Color.BLUE, "Isolated");
+            }
+
+            private void drawLegendItem(Graphics2D g2, int x, int y, Color color, String label) {
+                g2.setColor(color);
+                g2.fillOval(x, y - 8, 12, 12);
+                g2.setColor(Color.BLACK);
+                g2.drawString(label, x + 18, y + 2);
+            }
+        };
+
+        panel.setPreferredSize(new Dimension(1000, 800));
+        return panel;
+    }
     public static Component createKGMLGraph(String pathwayId) throws Exception {
         PathwayParser parser = new PathwayParser("dummyGene");
         List<Entry> entries = parser.parseKGML(pathwayId);
@@ -229,25 +351,57 @@ public class GeneInteractionNetworkv2 {
 
         List<GeneNode> nodes = new ArrayList<>();
         Map<String, GeneNode> nodeMap = new HashMap<>();
+
+        // Creăm nodurile și atribuim coordonate (sau random dacă lipsesc)
         for (Entry e : entries) {
             GeneNode gn = new GeneNode(e.getId(), e.getName(), e.getType());
+            GraphicsEntry graphics = e.getGraphics();
+            if (graphics != null) {
+                gn.setX(graphics.getX());
+                gn.setY(graphics.getY());
+            } else {
+                // fallback: coordonate random
+                gn.setX(new Random().nextInt(800) + 50);
+                gn.setY(new Random().nextInt(600) + 50);
+            }
             nodes.add(gn);
             nodeMap.put(e.getId(), gn);
         }
 
         List<GeneEdge> edges = new ArrayList<>();
+        Map<String, String> nodeRelationTypes = new HashMap<>();
+
+        // Construim muchiile și mapăm tipurile de relații pe noduri
         for (Relation r : relations) {
             String id1 = r.getEntry1().getId();
             String id2 = r.getEntry2().getId();
+            String type = r.getRelationType();
+
+            // Salvăm primul tip de relație pentru fiecare nod
+            nodeRelationTypes.putIfAbsent(id1, type);
+            nodeRelationTypes.putIfAbsent(id2, type);
+
             if (nodeMap.containsKey(id1) && nodeMap.containsKey(id2)) {
-                GeneEdge ge = new GeneEdge("r" + id1 + "_" + id2, id1, id2, r.getRelationType());
+                GeneEdge ge = new GeneEdge("r" + id1 + "_" + id2, id1, id2, type);
                 edges.add(ge);
             }
         }
-        InteractionData data = new InteractionData(nodes, edges);
-        return createGraphViewer(data).getDefaultView();
-    }
 
+        // Setăm culoarea nodurilor în funcție de tipul de relație
+        for (GeneNode node : nodes) {
+            String relationType = nodeRelationTypes.get(node.getId());
+            if ("inhibition".equalsIgnoreCase(relationType)) {
+                node.setColor(new Color(128, 0, 128)); // mov
+            } else if ("activation".equalsIgnoreCase(relationType)) {
+                node.setColor(new Color(0, 180, 0)); // verde
+            } else {
+                node.setColor(Color.BLUE); // izolat sau alt tip
+            }
+        }
+
+        InteractionData data = new InteractionData(nodes, edges);
+        return createHoverableGraphViewer(data);
+    }
     // Noua metodă: construiește un graf pe baza genele din baza de date (din JSON),
     // conectând genele care împărtășesc cel puțin un pathway comun.
     public static InteractionData createGraphFromGenes(List<DataModel.Gene> allGenes, DataModel.Gene selectedGene) {

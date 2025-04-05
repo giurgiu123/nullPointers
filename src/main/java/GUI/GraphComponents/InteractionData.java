@@ -9,4 +9,13 @@ public class InteractionData {
         this.nodes = nodes;
         this.edges = edges;
     }
+
+    public List<GeneNode> getNodes() {
+        return nodes;
+    }
+
+    public List<GeneEdge> getEdges() {
+        return edges;
+
+    }
 }
