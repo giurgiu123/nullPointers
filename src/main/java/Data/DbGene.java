@@ -1,6 +1,7 @@
 package Data;
 
 import DataModel.Gene;
+import DataModel.PathWay;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,7 +15,11 @@ import java.util.List;
 public class DbGene {
 
     // Lista de gene pe care vrem să le preluăm
-    List<String> geneNames = Arrays.asList("EGFR", "TP53", "BRCA1");
+    List<String> geneNames = Arrays.asList("EGFR", "TP53", "BRCA1", "BRCA2", "KRAS", "BRAF", "PTEN", "MYC", "CDKN2A", "ALK", "RET", "MET", "PIK3CA", "ERBB2", "PDGFRA",
+            "KIT", "FGFR1", "FGFR2", "FGFR3", "PDCD1", "CD274", "CTNNB1", "SMAD4", "APC",
+            "MDM2", "AR", "ESR1", "MTHFR", "CYP2D6", "VEGFA", "FGFR4", "KITLG", "SMARCA4",
+            "NOTCH1", "WNT1");
+
 
     // Lista care va conține obiectele Gene
     List<Gene> genes = new ArrayList<>();
@@ -23,24 +28,23 @@ public class DbGene {
     private static final String JSON_FILE_PATH = "src/main/resources/genes_database.json";
 
     public DbGene() {
-        // Verificăm dacă fișierul JSON există
+        // Verificăm dacă fișierul JSON există și dacă este gol
         File jsonFile = new File(JSON_FILE_PATH);
-        if (jsonFile.exists()) {
-            // Dacă fișierul JSON există, citim datele din el
-            System.out.println("Fișierul JSON există. Citim datele din JSON...");
+        if (jsonFile.exists() && jsonFile.length() > 0) {
+            // Dacă fișierul JSON există și conține date, citim datele din el
+            System.out.println("Fișierul JSON conține date. Citim datele din JSON...");
             genes = getGenesFromJsonFile();
+            // Afișăm informațiile despre gene citite din fișier
+            printGeneInformation(); // Afișează informațiile despre gene citite din fișier
         } else {
-            // Dacă fișierul JSON nu există, obținem datele de la API
-            System.out.println("Fișierul JSON nu există. Obținem datele de la API...");
+            // Dacă fișierul JSON nu există sau este gol, obținem datele de la API
+            System.out.println("Fișierul JSON este gol sau nu există. Obținem datele de la API...");
             fetchGeneData();
-            // Salvăm datele în fișierul JSON
+            // Salvăm datele obținute din API în fișierul JSON
             saveGenesToJson(jsonFile);
         }
-
-        // În continuare poți salva datele și în fișierul CSV dacă dorești
-        File csvFile = new File("genes_output.csv");
-        saveGenesToCsv(csvFile);
     }
+
 
 
     // Metodă nouă: returnează o listă de gene citite din fișierul JSON
@@ -65,6 +69,14 @@ public class DbGene {
                 geneObject.put("organism", gene.getOrganism());
                 geneObject.put("keggId", gene.getKeggId());
                 geneObject.put("idlist", gene.getIdlist());
+
+                // Salvăm lista de pathways
+                JSONArray pathwaysArray = new JSONArray();
+                for (PathWay pathway : gene.getPathWays()) {
+                    pathwaysArray.put(pathway.getPath()); // Asumăm că PathWay are o metodă getPathwayCode()
+                }
+                geneObject.put("pathways", pathwaysArray); // Adăugăm pathways în obiectul JSON
+
                 jsonArray.put(geneObject);
             }
             fileWriter.write(jsonArray.toString(4)); // indentare pentru o citire ușoară
@@ -73,6 +85,7 @@ public class DbGene {
             e.printStackTrace();
         }
     }
+
 
     // Funcție pentru a scrie datele despre gene într-un fișier CSV
     private void saveGenesToCsv(File file) {
@@ -114,7 +127,19 @@ public class DbGene {
                 String organism = geneObject.getString("organism");
                 String keggId = geneObject.getString("keggId");
                 String idlist = geneObject.getString("idlist");
+
+                // Creăm obiectul Gene
                 Gene gene = new Gene(name, description, chromosome, idlist, organism, keggId);
+
+                // Citim lista de pathways
+                JSONArray pathwaysArray = geneObject.getJSONArray("pathways");
+                List<PathWay> pathways = new ArrayList<>();
+                for (int j = 0; j < pathwaysArray.length(); j++) {
+                    String pathwayCode = pathwaysArray.getString(j); // Presupunem că PathWay are doar un cod de pathway
+                    pathways.add(new PathWay(pathwayCode)); // Creăm obiectul PathWay pentru fiecare pathway
+                }
+                gene.setPathWays(pathways); // Setăm lista de pathways pentru genă
+
                 genesList.add(gene);
             }
         } catch (IOException e) {
@@ -149,6 +174,7 @@ public class DbGene {
                 String organism = geneInfo.getJSONObject("organism").getString("scientificname");
 
                 Gene geneObj = new Gene(name, description, chromosome, idlist, organism, keggId);
+                geneObj.setPathWays(getPathwaysForGene(geneObj.getKeggId()));
 
                 // Adăugăm genă la lista de gene
                 genes.add(geneObj);
@@ -219,9 +245,32 @@ public class DbGene {
             System.out.println("  Organism: " + gene.getOrganism());
             System.out.println("  KEGG ID: " + gene.getKeggId());
             System.out.println("  ID LIST: " + gene.getIdlist());
+
+            // Afișăm pathway-urile asociate genei
+            System.out.println("  🛤 Pathways:");
+            for (PathWay pathWay : gene.getPathWays()) {
+                System.out.println("    Pathway Code: " + pathWay.getPath());
+            }
+
             System.out.println("---------------------------");
         }
     }
+
+
+    private static List<PathWay> getPathwaysForGene(String keggId) throws Exception {
+        String url = "https://rest.kegg.jp/link/pathway/" + keggId;
+        String data = getTextFromUrl(url);
+        List<PathWay> pathways = new ArrayList<>();
+        for (String line : data.split("\n")) {
+            if (line.isEmpty()) continue;
+            String[] parts = line.split("\t");
+            String pathwayCode = parts[1].split(":")[1];
+            pathways.add(new PathWay(pathwayCode));
+        }
+        return pathways;
+    }
+
+
 
     public static void main(String[] args) {
         // Creăm obiectul DbGene pentru a prelua și a salva informațiile direct în fișiere
@@ -229,10 +278,10 @@ public class DbGene {
         dbGene.printGeneInformation(); // Afișăm informațiile despre gene în consolă
 
         // Exemplu de utilizare a metodei de citire a genelor din fișierul JSON
-        List<Gene> genesFromJson = dbGene.getGenesFromJsonFile();
-        System.out.println("\nGene citite din fișierul JSON:");
-        for (Gene gene : genesFromJson) {
-            System.out.println(gene.getName());
-        }
-    }
+//        List<Gene> genesFromJson = dbGene.getGenesFromJsonFile();
+//        System.out.println("\nGene citite din fișierul JSON:");
+//        for (Gene gene : genesFromJson) {
+//            System.out.println(gene.getName());
+//        }
+   }
 }

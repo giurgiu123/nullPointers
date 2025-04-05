@@ -1,14 +1,11 @@
 package DataModel;
 
-import DataModel.EntryType.Entry;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class PathWay {
     private String path;
-    private List<Entry> entries;
-    private List<Relation> relations;
 
     public PathWay(String path) {
         this.path = path;
@@ -30,25 +27,20 @@ public class PathWay {
         return path;
     }
 
-    // Getters și Setters pentru entries și relations
-    public List<Entry> getEntries() {
-        return entries;
+    public String getPath() {
+        return path;
     }
 
-    public void setEntries(List<Entry> entries) {
-        this.entries = entries;
-    }
-
-    public List<Relation> getRelations() {
-        return relations;
-    }
-
-    public void setRelations(List<Relation> relations) {
-        this.relations = relations;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     @Override
     public String toString() {
-        return "PathWay { path='" + path + "', entries=" + entries + ", relations=" + relations + " }";
+        return "PathWay{" +
+                "path='" + path + '\'' +
+                '}';
     }
+
+
 }
