@@ -1,7 +1,8 @@
 
 package GUI.GraphComponents;
 
-import Data.PathwayParser;
+import BusinessLogic.DrugManipulator;
+import BusinessLogic.PathwayParser;
 import DataModel.Entry;
 import DataModel.GraphicsEntry;
 import DataModel.Relation;
@@ -37,7 +38,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class GeneInteractionNetworkv2 {
+public class GeneInteractionNetworkv2 implements DrugManipulator {
 
     public static String getTextFromUrl(String urlString) throws Exception {
         URL url = new URL(urlString);
@@ -152,7 +153,6 @@ public class GeneInteractionNetworkv2 {
     public static Viewer createGraphViewer(InteractionData data) {
         SingleGraph graph = new SingleGraph("Gene-Gene Interaction Network");
 
-        // ✔ Stil grafic pentru noduri și muchii
         String styleSheet = ""
                 + "graph { padding: 50px; }"
                 + "node { fill-color: #61bffc; size: 30px; text-size: 20; text-alignment: under; stroke-mode: plain; stroke-color: #444; stroke-width: 1.5px; }"
@@ -225,31 +225,7 @@ public class GeneInteractionNetworkv2 {
 
         return viewer;
     }
-//    public static Component createKGMLGraph(String pathwayId) throws Exception {
-//        PathwayParser parser = new PathwayParser("dummyGene");
-//        List<Entry> entries = parser.parseKGML(pathwayId);
-//        List<Relation> relations = parser.parseRelations(pathwayId);
-//
-//        List<GeneNode> nodes = new ArrayList<>();
-//        Map<String, GeneNode> nodeMap = new HashMap<>();
-//        for (Entry e : entries) {
-//            GeneNode gn = new GeneNode(e.getId(), e.getName(), e.getType());
-//            nodes.add(gn);
-//            nodeMap.put(e.getId(), gn);
-//        }
-//
-//        List<GeneEdge> edges = new ArrayList<>();
-//        for (Relation r : relations) {
-//            String id1 = r.getEntry1().getId();
-//            String id2 = r.getEntry2().getId();
-//            if (nodeMap.containsKey(id1) && nodeMap.containsKey(id2)) {
-//                GeneEdge ge = new GeneEdge("r" + id1 + "_" + id2, id1, id2, r.getRelationType());
-//                edges.add(ge);
-//            }
-//        }
-//        InteractionData data = new InteractionData(nodes, edges);
-//        return createGraphViewer(data).getDefaultView();
-//    }
+
 private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
     for (GeneNode node : nodes) {
         double dx = p.x - node.getX();
@@ -400,28 +376,6 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
             node.setY(newY);
         }
 
-////
-//        int targetWidth = 1500;
-//        int targetHeight = 1000;
-//        int padding = 50;
-//
-////
-//        double scaleX = (targetWidth - 2.0 * padding) / (maxX - minX);
-//        double scaleY = (targetHeight - 2.0 * padding) / (maxY - minY);
-//        double scale = Math.min(scaleX, scaleY); // păstrăm proporțiile
-//
-////
-//        for (GeneNode node : nodes) {
-//            int originalX = node.getX();
-//            int originalY = node.getY();
-//
-//            int newX = (int) ((originalX - minX) * scale + padding);
-//            int newY = (int) ((originalY - minY) * scale + padding);
-//
-//            node.setX(newX);
-//            node.setY(newY);
-//        }
-
         List<GeneEdge> edges = new ArrayList<>();
         Map<String, String> nodeRelationTypes = new HashMap<>();
 
@@ -521,8 +475,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
         return false;
     }
 
-    // Metoda nouă: încarcă harta medicamentelor din fișierul JSON "generated_gene_drug_summary.json"
-    public static Map<String, List<DrugInfo>> loadDrugMapFromJSON(String filePath) {
+    public Map<String, List<DrugInfo>> loadDrugMapFromJSON(String filePath) {
         Map<String, List<DrugInfo>> drugMap = new HashMap<>();
         try {
             File file = new File(filePath);
@@ -565,7 +518,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
         table.setShowHorizontalLines(true);
         table.setShowVerticalLines(false);
     }
-    // Metodă utilitară pentru a uni elementele unui JSONArray într-un singur string
+
     private static String joinJSONArray(JSONArray array, String delimiter) {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < array.length(); i++) {
@@ -586,13 +539,12 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
         return rows;
     }
 
-    // Metoda de afișare a rețelei și sugestiilor de repurposing într-o interfață integrată.
-    public static void displayNetworkAndDrugSuggestions(InteractionData data) {
+    public void displayNetworkAndDrugSuggestions(InteractionData data) {
         Viewer viewer = createGraphViewer(data);
         Component graphPanel = viewer.getDefaultView();
 
-        // Încarcă harta de medicamente
-        Map<String, List<DrugInfo>> drugDB = loadDrugMapFromJSON("src/main/resources/generated_gene_drug_summary.json");
+        //harta med
+        Map<String, List<DrugInfo>> drugDB = this.loadDrugMapFromJSON("src/main/resources/generated_gene_drug_summary.json");
         List<Object[]> rows = new ArrayList<>();
 
         for (GeneNode gene : data.nodes) {
@@ -642,7 +594,6 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, graphPanel, tableScroll);
         splitPane.setDividerLocation(700);
 
-        // 🔙 Butonul "Back"
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(backButton);
@@ -652,7 +603,6 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         bottomPanel.add(backButton);
 
-        // 🪟 Frame principal
         JFrame frame = new JFrame("Gene Interaction Network & Drug Repurposing Suggestions");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new BorderLayout());

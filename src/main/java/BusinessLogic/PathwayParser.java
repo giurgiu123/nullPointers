@@ -1,17 +1,14 @@
-package Data;
+package BusinessLogic;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import GUI.GraphComponents.GeneInteractionNetworkv2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -25,41 +22,9 @@ public class PathwayParser implements GetParsePath{
         this.gene = gene;
     }
 
-    public String getGene() {
-        return gene;
-    }
-
-    public void setGene(String gene) {
-        this.gene = gene;
-    }
-
-//    public List<Entry> parseKGML(String pathwayId) throws Exception {
-//        String urlString = "https://rest.kegg.jp/get/" + pathwayId + "/kgml";
-//        String kgmlText = getTextFromUrl(urlString);
-//
-//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//        DocumentBuilder builder = factory.newDocumentBuilder();
-//        Document doc = builder.parse(new ByteArrayInputStream(kgmlText.getBytes(StandardCharsets.UTF_8)));
-//        doc.getDocumentElement().normalize();
-//
-//        List<Entry> entries = new ArrayList<>();
-//        NodeList entryNodes = doc.getElementsByTagName("entry");
-//        for (int i = 0; i < entryNodes.getLength(); i++) {
-//            Node node = entryNodes.item(i);
-//            if (node.getNodeType() == Node.ELEMENT_NODE) {
-//                Element element = (Element) node;
-//                String id = element.getAttribute("id");
-//                String name = element.getAttribute("name");
-//                String type = element.getAttribute("type");
-//                Entry entry = new Entry(id, name, type);
-//                entries.add(entry);
-//            }
-//        }
-//        return entries;
-//    }
 public List<Entry> parseKGML(String pathwayId) throws Exception {
     String urlString = "https://rest.kegg.jp/get/" + pathwayId + "/kgml";
-    String kgmlText = getTextFromUrl(urlString);
+    String kgmlText = GeneInteractionNetworkv2.getTextFromUrl(urlString);
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
@@ -93,15 +58,9 @@ public List<Entry> parseKGML(String pathwayId) throws Exception {
     return entries;
 }
 
-    /**
-     * Metoda parseRelations descarcă același fișier KGML pentru un pathway dat,
-     * parcurge elementele <relation> și, pentru fiecare relație, extrage atributele "entry1" și "entry2"
-     * și tipul relației din elementul <subtype>. Se construiește un obiect Relation pentru fiecare relație.
-     */
     public List<Relation> parseRelations(String pathwayId) throws Exception {
-        // Descărcăm KGML
         String urlString = "https://rest.kegg.jp/get/" + pathwayId + "/kgml";
-        String kgmlText = getTextFromUrl(urlString);
+        String kgmlText = GeneInteractionNetworkv2.getTextFromUrl(urlString);
 
         // Parse XML
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -145,19 +104,5 @@ public List<Entry> parseKGML(String pathwayId) throws Exception {
         return relations;
     }
 
-    // Metodă utilitară pentru a descărca textul de la un URL.
-    private String getTextFromUrl(String urlString) throws Exception {
-        URL url = new URL(urlString);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = in.readLine()) != null) {
-            sb.append(line).append("\n");
-        }
-        in.close();
-        return sb.toString();
-    }
 
 }

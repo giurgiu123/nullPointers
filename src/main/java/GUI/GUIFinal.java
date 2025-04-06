@@ -1,9 +1,8 @@
 package GUI;
 
-import Data.DbGene;
-import Data.DrugManipulator;
-import Data.GeneList;
-import DataModel.Drug;
+import BusinessLogic.DbGene;
+import BusinessLogic.DrugManipulator;
+import BusinessLogic.GeneList;
 import DataModel.Gene;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -26,7 +25,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class GUIFinal implements DrugManipulator {
+public class GUIFinal  {
 
     private JTextField geneInput;
     private JButton exploreButton;
@@ -40,9 +39,9 @@ public class GUIFinal implements DrugManipulator {
     private List<Gene> allGenes = new ArrayList<>();
     private GeneList geneList;
     private JComboBox<String> drugComboBox;
-    private JButton showDrugGenesButton;
-    private Map<String, List<Drug>> drugToGeneMap = new HashMap<>();
-    JButton showAllDrugsButton;
+    private JButton showAllDrugsButton;
+    private DrugManipulator drugManipulator;
+
 
 
     public static void main(String[] args) {
@@ -77,12 +76,12 @@ public class GUIFinal implements DrugManipulator {
     public void createAndShowGUI() {
         this.geneList  = new DbGene();
         this.allGenes = geneList.getGenesFromJsonFile();
+        this.drugManipulator = new GeneInteractionNetworkv2();
 
         JFrame frame = new JFrame("Gene Explorer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1400, 900);
 
-        // Panelul de sus: câmp de input și butoane
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.add(new JLabel("Enter Gene Symbol:"));
         geneInput = new JTextField(20);
@@ -102,25 +101,25 @@ public class GUIFinal implements DrugManipulator {
         stylizeButton(similarButton);
         stylizeButton(showPathwaysButton);
         stylizeButton(showAllDrugsButton);
-        // Zona stângă: afișare informații despre genă
+
         geneOverviewArea = new JTextArea();
         geneOverviewArea.setEditable(false);
         geneOverviewArea.setFont(new Font("Times New Roman", Font.BOLD, 16));
         JScrollPane overviewScrollPane = new JScrollPane(geneOverviewArea);
         overviewScrollPane.setPreferredSize(new Dimension(400, 800));
 
-        // Adăugăm GIF-ul (loading gif)
+
         ImageIcon dnaGifIcon = new ImageIcon(getClass().getResource("/dna.gif"));
         JLabel dnaGifLabel = new JLabel(dnaGifIcon, SwingConstants.CENTER);
 
-        // Panelul pentru rețea și alte afișări
+
         networkPanel = new JPanel(new BorderLayout());
 
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.add(overviewScrollPane, BorderLayout.CENTER);
         leftPanel.add(dnaGifLabel, BorderLayout.SOUTH);
 
-        // Creăm un splitPane cu leftPanel pentru zona din stânga și networkPanel pentru dreapta
+        //  splitPane cu leftPanel pentru zona din stânga și networkPanel pentru dreapta
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, networkPanel);
         splitPane.setDividerLocation(400);
 
@@ -134,7 +133,7 @@ public class GUIFinal implements DrugManipulator {
         leftPanel.setBackground(Color.WHITE);
         geneOverviewArea.setBackground(new Color(250, 250, 250));
         geneOverviewArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        // Acțiunea butonului "Explore"
+
         exploreButton.addActionListener(e -> {
             String geneSymbol = geneInput.getText().trim();
             if (!geneSymbol.isEmpty()) {
@@ -144,7 +143,7 @@ public class GUIFinal implements DrugManipulator {
             }
         });
 
-        // Butonul "See more details" – afișează lista de gene conectate pe baza pathway-urilor
+
         detailsButton.addActionListener(e -> {
             SwingUtilities.invokeLater(() -> {
                 String inputGeneSymbol = geneInput.getText().trim();
@@ -181,7 +180,7 @@ public class GUIFinal implements DrugManipulator {
                     Gene selectedGene = findGeneByName(allGenes, selectedGeneName);
                     if (selectedGene != null) {
                         InteractionData data = GeneInteractionNetworkv2.createGraphFromGenes(allGenes, selectedGene);
-                        GeneInteractionNetworkv2.displayNetworkAndDrugSuggestions(data);
+                        drugManipulator.displayNetworkAndDrugSuggestions(data);
                     } else {
                         JOptionPane.showMessageDialog(null, "Selected gene not found!");
                     }
@@ -189,7 +188,7 @@ public class GUIFinal implements DrugManipulator {
             });
         });
 
-        // Butonul "Show Similar Genes" – afișează un tabel cu genele similare
+
         similarButton.addActionListener(e -> {
             SwingUtilities.invokeLater(() -> {
                 String inputGeneSymbol = geneInput.getText().trim();
@@ -202,7 +201,7 @@ public class GUIFinal implements DrugManipulator {
                     JOptionPane.showMessageDialog(null, "Input gene not found in the database!");
                     return;
                 }
-                Map<String, List<DrugInfo>> drugMap = GeneInteractionNetworkv2.loadDrugMapFromJSON("src/main/resources/generated_gene_drug_summary.json");
+                Map<String, List<DrugInfo>> drugMap = drugManipulator.loadDrugMapFromJSON("src/main/resources/generated_gene_drug_summary.json");
                 List<Object[]> similarityRows = new ArrayList<>();
                 List<DrugInfo> selectedDrugs = drugMap.get(selectedGene.getName());
                 if (selectedDrugs == null || selectedDrugs.isEmpty()) {
@@ -321,8 +320,7 @@ public class GUIFinal implements DrugManipulator {
 
             if (selectedPathway == null) return;
 
-            // ----- INTERFAȚĂ DE LOADING CU BARA DE PROGRES -----
-            // ----- INTERFAȚĂ DE LOADING CU BARĂ ALBASTRĂ, TEXT ȘI GIF MIC -----
+
             JDialog loadingDialog = new JDialog((Frame) null, "Loading Graph", true);
             loadingDialog.setUndecorated(false);
             JPanel panel = new JPanel(new BorderLayout(10, 10));
@@ -532,7 +530,7 @@ public class GUIFinal implements DrugManipulator {
                 Viewer viewer = GeneInteractionNetworkv2.createGraphViewer(data);
                 ViewPanel viewPanel = (ViewPanel) viewer.getDefaultView();
                 viewPanel.setPreferredSize(new Dimension(700, 600));
-                Map<String, List<DrugInfo>> drugMap = GeneInteractionNetworkv2.loadDrugMapFromJSON("src/main/resources/generated_gene_drug_summary.json");
+                Map<String, List<DrugInfo>> drugMap = drugManipulator.loadDrugMapFromJSON("src/main/resources/generated_gene_drug_summary.json");
                 List<Object[]> drugRows = GeneInteractionNetworkv2.filterDrugsForGene(data, drugMap);
                 String[] columnNames = {"Gene", "Drug", "Indication", "Mechanism"};
                 JTable drugTable = new JTable(drugRows.toArray(new Object[0][]), columnNames){
@@ -574,7 +572,6 @@ public class GUIFinal implements DrugManipulator {
         });
     }
 
-    // Metodă utilitară pentru a găsi o genă după nume.
     private DataModel.Gene findGeneByName(List<DataModel.Gene> genes, String geneSymbol) {
         for (DataModel.Gene gene : genes) {
             if (gene.getName().equalsIgnoreCase(geneSymbol)) {
@@ -584,7 +581,6 @@ public class GUIFinal implements DrugManipulator {
         return null;
     }
 
-    // Metodă utilitară pentru a verifica dacă două gene au cel puțin un pathway comun.
     private boolean shareCommonPathway(DataModel.Gene gene1, DataModel.Gene gene2) {
         for (DataModel.PathWay p1 : gene1.getPathWays()) {
             for (DataModel.PathWay p2 : gene2.getPathWays()) {
@@ -596,7 +592,6 @@ public class GUIFinal implements DrugManipulator {
         return false;
     }
 
-    // Metodă pentru a obține lista de pathway-uri comune între două gene.
     private List<String> getCommonPathways(DataModel.Gene gene1, DataModel.Gene gene2) {
         List<String> common = new ArrayList<>();
         for (DataModel.PathWay p1 : gene1.getPathWays()) {
@@ -609,21 +604,4 @@ public class GUIFinal implements DrugManipulator {
         return common;
     }
 
-
-    public List<Drug> readDrugData() {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            InputStream input = getClass().getClassLoader().getResourceAsStream("src/main/resources/generated_gene_drug_summary.json");
-
-            if (input == null) {
-                throw new RuntimeException("Fișierul JSON nu a fost găsit în resources.");
-            }
-
-            List<Drug> drugs = mapper.readValue(input, new TypeReference<List<Drug>>() {});
-            return drugs;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

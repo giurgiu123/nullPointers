@@ -1,4 +1,4 @@
-package Data;
+package BusinessLogic;
 
 import DataModel.Gene;
 import DataModel.PathWay;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DbGene implements GeneList {
-    List<String> geneNames = Arrays.asList("EGFR", "TP53", "BRCA1", "BRCA2", "KRAS", "BRAF", "PTEN", "MYC", "CDKN2A", "ALK", "RET", "MET", "PIK3CA", "ERBB2", "PDGFRA",
+    private List<String> geneNames = Arrays.asList("EGFR", "TP53", "BRCA1", "BRCA2", "KRAS", "BRAF", "PTEN", "MYC", "CDKN2A", "ALK", "RET", "MET", "PIK3CA", "ERBB2", "PDGFRA",
             "KIT", "FGFR1", "FGFR2", "FGFR3", "PDCD1", "CD274", "CTNNB1", "SMAD4", "APC",
             "MDM2", "AR", "ESR1", "MTHFR", "CYP2D6", "VEGFA", "FGFR4", "KITLG", "SMARCA4",
             "NOTCH1", "WNT1");
@@ -31,8 +31,6 @@ public class DbGene implements GeneList {
     }
 
 
-
-    // Metodă nouă: returnează o listă de gene citite din fișierul JSON
     public List<Gene> getGenesFromJsonFile() {
         File file = new File(JSON_FILE_PATH);
         if (!file.exists()) {
@@ -42,7 +40,6 @@ public class DbGene implements GeneList {
         return readGenesFromJson(file);
     }
 
-    // Funcție pentru a scrie datele despre gene într-un fișier JSON
     private void saveGenesToJson(File file) {
         try (FileWriter fileWriter = new FileWriter(file)) {
             JSONArray jsonArray = new JSONArray();
@@ -55,7 +52,7 @@ public class DbGene implements GeneList {
                 geneObject.put("keggId", gene.getKeggId());
                 geneObject.put("idlist", gene.getIdlist());
 
-                // Salvăm lista de pathways
+                // pathways
                 JSONArray pathwaysArray = new JSONArray();
                 for (PathWay pathway : gene.getPathWays()) {
                     pathwaysArray.put(pathway.getPath());
@@ -72,29 +69,6 @@ public class DbGene implements GeneList {
     }
 
 
-    // Funcție pentru a scrie datele despre gene într-un fișier CSV
-    private void saveGenesToCsv(File file) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(file))) {
-            // Scriem header-ul CSV
-            pw.println("name,description,chromosome,organism,keggId,idlist");
-            // Scriem fiecare genă
-            for (Gene gene : genes) {
-                String line = String.format("\"%s\",\"%s\",%d,\"%s\",\"%s\",\"%s\"",
-                        gene.getName(),
-                        gene.getDescription().replace("\"", "\"\""),  // escapare ghilimele
-                        gene.getNrChromosome(),
-                        gene.getOrganism(),
-                        gene.getKeggId(),
-                        gene.getIdlist());
-                pw.println(line);
-            }
-            System.out.println("Datele au fost salvate în CSV la: " + file.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Funcție pentru a citi datele din fișierul JSON
     private List<Gene> readGenesFromJson(File file) {
         List<Gene> genesList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {

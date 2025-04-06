@@ -9,7 +9,6 @@ public class Relation {
     public Relation(Entry entry1, Entry entry2, String relationType) {
         this.entry1 = entry1;
         this.entry2 = entry2;
-        // Dacă relația este "inhibition", o păstrăm, altfel setăm ca "activation"
         if (relationType.equalsIgnoreCase("inhibition")) {
             this.relationType = "inhibition";
         } else {

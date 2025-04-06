@@ -59,7 +59,7 @@ Gene Explorer is a desktop Java application developed for PoliHack2025, aiming t
 
 - **Java (Swing)** for GUI
 - **Custom JSON datasets** for genes, drugs, and interactions
-- **Data Models**: Java classes for genes, pathways, drugs, etc.
+- **BusinessLogic Models**: Java classes for genes, pathways, drugs, etc.
 - **Graph Logic**: Java-based network mapping from pathway relationships
 
 ---
@@ -69,7 +69,7 @@ Gene Explorer is a desktop Java application developed for PoliHack2025, aiming t
 ```
 src/
 ├── main/java/
-│   ├── Data/                  # Pathway parsing & JSON utilities
+│   ├── BusinessLogic/                  # Pathway parsing & JSON utilities
 │   ├── DataModel/             # POJOs for Gene, Drug, Relation etc.
 │   ├── GUI/                   # GUI logic
 │   │   └── GraphComponents/   # Graph drawing components
