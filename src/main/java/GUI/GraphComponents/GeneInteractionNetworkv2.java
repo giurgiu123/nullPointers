@@ -61,19 +61,20 @@ public class GeneInteractionNetworkv2 implements DrugManipulator {
         if (pathwayLines.length == 0) {
             throw new Exception("Nu s-au găsit căi pentru gena " + geneSymbol);
         }
-        String[] parts = pathwayLines[0].split("\t");
+        String[] parts = pathwayLines[0].split("\t"); // pentru tab
         if (parts.length < 2) {
             throw new Exception("Format neașteptat pentru calea: " + pathwayLines[0]);
         }
         String pathwayId = parts[1];
         System.out.println("Folosim calea: " + pathwayId);
 
-        String kgmlUrl = "https://rest.kegg.jp/get/" + pathwayId + "/kgml";
-        String kgmlText = getTextFromUrl(kgmlUrl);
+        String kgmlUrl = "https://rest.kegg.jp/get/" + pathwayId + "/kgml"; //aici se face efectiv calea
+        String kgmlText = getTextFromUrl(kgmlUrl);//folosim metoda sa luam tot
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document xmlDoc = dBuilder.parse(new ByteArrayInputStream(kgmlText.getBytes("UTF-8")));
-        xmlDoc.getDocumentElement().normalize();
+        Document xmlDoc = dBuilder.parse(new ByteArrayInputStream(kgmlText.getBytes("UTF-8"))); // converteste intr un array de bytes cu codul UTF-8
+        xmlDoc.getDocumentElement().normalize();// textul e posibil sa fie fragmentat in mai multe bucati ,
+        // noi vrem sa fie unit intr un singur nod sa ne fie mai usor sa lucram cu el
 
         Map<String, String> entryMap = new HashMap<>();
         NodeList entryList = xmlDoc.getElementsByTagName("entry");
@@ -82,7 +83,7 @@ public class GeneInteractionNetworkv2 implements DrugManipulator {
             if (node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
                 Element entryElem = (Element) node;
                 String type = entryElem.getAttribute("type");
-                if ("gene".equals(type)) {
+                if ("gene".equals(type)) {// pentru genele cu type ul gene (asta am observat din fisierul XML) - am incercat sa identificam un pattern
                     String id = entryElem.getAttribute("id");
                     String nameAttr = entryElem.getAttribute("name");
                     String[] nameParts = nameAttr.split(" ");
@@ -139,9 +140,9 @@ public class GeneInteractionNetworkv2 implements DrugManipulator {
         for (Map.Entry<String, String> entry : entryMap.entrySet()) {
             String entryId = entry.getKey();
             String symbol = entry.getValue();
-            if (!symbol.equals(geneSymbol) && !nodeMap.containsKey(entryId) && similarCount < 30) {
-                nodeMap.put(entryId, new GeneNode(entryId, symbol, "similar"));
-                edges.add(new GeneEdge("e_sim_" + entryId, centralEntryId, entryId, "similar"));
+            if (!symbol.equals(geneSymbol) && !nodeMap.containsKey(entryId) && similarCount < 30) {//sa oprim cand ajungem la 30 de gene simil
+                nodeMap.put(entryId, new GeneNode(entryId, symbol, "similar"));//face un nou nod
+                edges.add(new GeneEdge("e_sim_" + entryId, centralEntryId, entryId, "similar"));// il adauga in muchii ca similar
                 similarCount++;
             }
         }
@@ -264,7 +265,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
                             } else {
                                 setToolTipText(null);
                             }
-                            repaint();
+                            repaint();//reconstruieste vizual dar nu schimba nimic in memorie
                         }
                     }
                 });
@@ -298,7 +299,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
                     }
                 }
 
-                // 🎨 Desenează legenda în colțul din stânga-jos
+                // Deseneaza legenda in colțul din stanga jos
                 int legendX = 20;
                 int legendY = getHeight() - 90;
 
@@ -344,7 +345,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
             nodes.add(gn);
             nodeMap.put(e.getId(), gn);
         }
-// 📐 Calculăm zona originală (bounding box)
+// Calculam zona originală (bounding box)
         int minX = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE;
         int minY = Integer.MAX_VALUE, maxY = Integer.MIN_VALUE;
 
@@ -355,16 +356,16 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
             maxY = Math.max(maxY, node.getY());
         }
 
-// 🧭 Spațiul final dorit
+// spatiul final dorit
         int targetWidth = 1500;
         int targetHeight = 1000;
         int padding = 50;
 
-// 🧮 Calculăm scale separat pe X și Y pentru a folosi întreg spațiul
+// calculez scale separat pe X și Y pentru a folosi întreg spatiul
         double scaleX = (targetWidth - 2.0 * padding) / (maxX - minX);
         double scaleY = (targetHeight - 2.0 * padding) / (maxY - minY);
 
-// 🪄 Rescalăm coordonatele fără păstrarea proporției (stretch full screen)
+// rescalez coordonatele fara pastrarea proportiei(stretch full screen)
         for (GeneNode node : nodes) {
             int originalX = node.getX();
             int originalY = node.getY();
@@ -379,13 +380,13 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
         List<GeneEdge> edges = new ArrayList<>();
         Map<String, String> nodeRelationTypes = new HashMap<>();
 
-        // Construim muchiile și mapăm tipurile de relații pe noduri
+        // Construim muchiile si mapam tipurile de relatii pe noduri
         for (Relation r : relations) {
             String id1 = r.getEntry1().getId();
             String id2 = r.getEntry2().getId();
             String type = r.getRelationType();
 
-            // Salvăm primul tip de relație pentru fiecare nod
+            // salvam primul tip de relatie pentru fiecare nod
             nodeRelationTypes.putIfAbsent(id1, type);
             nodeRelationTypes.putIfAbsent(id2, type);
 
@@ -395,7 +396,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
             }
         }
 
-        // Setăm culoarea nodurilor în funcție de tipul de relație
+        // setam culoarea nodurilor in functie de tipul de relatie
         for (GeneNode node : nodes) {
             String relationType = nodeRelationTypes.get(node.getId());
             if ("inhibition".equalsIgnoreCase(relationType)) {
@@ -410,8 +411,8 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
         InteractionData data = new InteractionData(nodes, edges);
         return createHoverableGraphViewer(data);
     }
-    // Noua metodă: construiește un graf pe baza genele din baza de date (din JSON),
-    // conectând genele care împărtășesc cel puțin un pathway comun.
+    //  construieste un graf pe baza genele din baza de date json,
+    // conectand genele care impartasesc cel puțin un pathway comun.
     public static InteractionData createGraphFromGenes(List<DataModel.Gene> allGenes, DataModel.Gene selectedGene) {
         Map<String, GeneNode> nodeMap = new HashMap<>();
         List<GeneEdge> edges = new ArrayList<>();
@@ -438,7 +439,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
             }
         }
 
-        // Creează muchii între genele care împărtășesc cel puțin un pathway comun.
+        // creeaza muchii intre genele care impartasesc cel putin un pathway comun.
         List<String> geneNames = new ArrayList<>(nodeMap.keySet());
         for (int i = 0; i < geneNames.size(); i++) {
             for (int j = i + 1; j < geneNames.size(); j++) {
@@ -453,7 +454,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
         return new InteractionData(new ArrayList<>(nodeMap.values()), edges);
     }
 
-    // Metodă utilitară pentru a găsi o genă după nume în lista de gene.
+    // metoda utilitara pentru a gasi o gena dupa nume în lista de gene.
     private static DataModel.Gene findGeneByName(List<DataModel.Gene> genes, String name) {
         for (DataModel.Gene gene : genes) {
             if (gene.getName().equalsIgnoreCase(name)) {
@@ -463,7 +464,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
         return null;
     }
 
-    // Verifică dacă două gene au cel puțin un pathway comun.
+    // verifica dacă doua gene au cel puțin un pathway comun.
     private static boolean shareCommonPathway(DataModel.Gene gene1, DataModel.Gene gene2) {
         for (DataModel.PathWay p1 : gene1.getPathWays()) {
             for (DataModel.PathWay p2 : gene2.getPathWays()) {
@@ -493,10 +494,10 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
                 JSONArray geneArray = obj.getJSONArray("Gene");
                 JSONArray diseaseArray = obj.getJSONArray("Disease");
                 JSONArray mechanismArray = obj.getJSONArray("Mechanism");
-                // Convertește array-urile de stringuri în câte un string concatenat
+                // converteste array-urile de stringuri in cate un string concatenat
                 String indication = joinJSONArray(diseaseArray, ", ");
                 String mechanism = joinJSONArray(mechanismArray, ", ");
-                // Pentru fiecare genă din array, adaugă o intrare în mapă
+                // pentru fiecare gena din array, adauga o intrare în mapa
                 for (int j = 0; j < geneArray.length(); j++) {
                     String gene = geneArray.getString(j).trim();
                     DrugInfo info = new DrugInfo(gene, drugName, indication, mechanism);
@@ -519,7 +520,7 @@ private static GeneNode findNodeAt(Point p, List<GeneNode> nodes) {
         table.setShowVerticalLines(false);
     }
 
-    private static String joinJSONArray(JSONArray array, String delimiter) {
+    private static String joinJSONArray(JSONArray array, String delimiter) { //ca la indication si machanism pot fi mai multe separate prin virgula
         List<String> list = new ArrayList<>();
         for (int i = 0; i < array.length(); i++) {
             list.add(array.getString(i));
