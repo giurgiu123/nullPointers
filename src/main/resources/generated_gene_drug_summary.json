@@ -1,0 +1,585 @@
+[
+    {
+        "Drug": "Afatinib",
+        "Gene": [
+            "CTNNB1",
+            "CYP2D6",
+            "FGFR2",
+            "KIT",
+            "KITLG",
+            "MTHFR",
+            "PDGFRA",
+            "PIK3CA",
+            "PTEN",
+            "RET",
+            "TP53",
+            "VEGFA",
+            "WNT1"
+        ],
+        "Disease": [
+            "Brain tumor",
+            "Gastrointestinal stromal tumor",
+            "Hematologic malignancy",
+            "Lung cancer",
+            "Melanoma",
+            "Myeloma",
+            "Ovarian cancer",
+            "Pancreatic cancer",
+            "Prostate cancer",
+            "Renal cell carcinoma",
+            "Solid tumors",
+            "Thyroid cancer"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "CDK4/6 inhibitor",
+            "EGFR inhibitor",
+            "Epigenetic modulator",
+            "FGFR inhibitor",
+            "Immune checkpoint inhibitor",
+            "Monoclonal antibody",
+            "PI3K inhibitor",
+            "Selective estrogen receptor modulator",
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "Alpelisib",
+        "Gene": [
+            "ALK",
+            "BRAF",
+            "CTNNB1",
+            "ESR1",
+            "FGFR2",
+            "FGFR3",
+            "MET",
+            "MYC",
+            "PDCD1",
+            "PIK3CA",
+            "PTEN",
+            "SMARCA4",
+            "VEGFA",
+            "WNT1"
+        ],
+        "Disease": [
+            "Advanced cancer",
+            "Brain tumor",
+            "Breast cancer",
+            "Colorectal cancer",
+            "Gastrointestinal stromal tumor",
+            "Leukemia",
+            "Lung cancer",
+            "Melanoma",
+            "Pancreatic cancer",
+            "Renal cell carcinoma",
+            "Solid tumors"
+        ],
+        "Mechanism": [
+            "CDK4/6 inhibitor",
+            "FGFR inhibitor",
+            "Immune checkpoint inhibitor",
+            "MEK inhibitor",
+            "Monoclonal antibody",
+            "PI3K inhibitor",
+            "Selective estrogen receptor modulator",
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "Crizotinib",
+        "Gene": [
+            "BRAF",
+            "EGFR",
+            "ESR1",
+            "FGFR2",
+            "FGFR4",
+            "KIT",
+            "MTHFR",
+            "MYC",
+            "NOTCH1",
+            "PDCD1",
+            "PIK3CA",
+            "VEGFA"
+        ],
+        "Disease": [
+            "Advanced cancer",
+            "Brain tumor",
+            "Breast cancer",
+            "Gastrointestinal stromal tumor",
+            "Hematologic malignancy",
+            "Lung cancer",
+            "Melanoma",
+            "Prostate cancer",
+            "Solid tumors",
+            "Thyroid cancer"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "Epigenetic modulator",
+            "FGFR inhibitor",
+            "Immune checkpoint inhibitor",
+            "MEK inhibitor",
+            "PARP inhibitor",
+            "PI3K inhibitor"
+        ]
+    },
+    {
+        "Drug": "Enzalutamide",
+        "Gene": [
+            "ERBB2",
+            "FGFR1",
+            "FGFR2",
+            "FGFR3",
+            "FGFR4",
+            "KRAS",
+            "MDM2",
+            "NOTCH1",
+            "RET"
+        ],
+        "Disease": [
+            "Colorectal cancer",
+            "Hematologic malignancy",
+            "Leukemia",
+            "Lung cancer",
+            "Pancreatic cancer",
+            "Renal cell carcinoma",
+            "Solid tumors",
+            "Thyroid cancer"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "CDK4/6 inhibitor",
+            "EGFR inhibitor",
+            "FGFR inhibitor",
+            "Immune checkpoint inhibitor",
+            "MEK inhibitor",
+            "Monoclonal antibody",
+            "PI3K inhibitor",
+            "Selective estrogen receptor modulator"
+        ]
+    },
+    {
+        "Drug": "Erlotinib",
+        "Gene": [
+            "ALK",
+            "CD274",
+            "ERBB2",
+            "FGFR1",
+            "KIT",
+            "KRAS",
+            "MYC",
+            "PDGFRA",
+            "PTEN",
+            "TP53",
+            "VEGFA"
+        ],
+        "Disease": [
+            "Brain tumor",
+            "Breast cancer",
+            "Colorectal cancer",
+            "Gastrointestinal stromal tumor",
+            "Leukemia",
+            "Lung cancer",
+            "Melanoma",
+            "Prostate cancer",
+            "Solid tumors"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "Epigenetic modulator",
+            "FGFR inhibitor",
+            "Immune checkpoint inhibitor",
+            "MEK inhibitor",
+            "Monoclonal antibody",
+            "PARP inhibitor",
+            "Selective estrogen receptor modulator",
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "Gefitinib",
+        "Gene": [
+            "CTNNB1",
+            "FGFR2",
+            "KRAS",
+            "MTHFR",
+            "MYC",
+            "PIK3CA",
+            "PTEN",
+            "SMARCA4",
+            "WNT1"
+        ],
+        "Disease": [
+            "Colorectal cancer",
+            "Hematologic malignancy",
+            "Melanoma",
+            "Myeloma",
+            "Ovarian cancer",
+            "Pancreatic cancer",
+            "Renal cell carcinoma",
+            "Solid tumors",
+            "Thyroid cancer"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "EGFR inhibitor",
+            "Epigenetic modulator",
+            "Immune checkpoint inhibitor",
+            "MEK inhibitor",
+            "PARP inhibitor"
+        ]
+    },
+    {
+        "Drug": "Idasanutlin",
+        "Gene": [
+            "APC",
+            "AR",
+            "CTNNB1",
+            "ERBB2",
+            "FGFR3",
+            "KIT",
+            "MTHFR",
+            "NOTCH1",
+            "PDCD1"
+        ],
+        "Disease": [
+            "Brain tumor",
+            "Gastrointestinal stromal tumor",
+            "Hematologic malignancy",
+            "Lung cancer",
+            "Ovarian cancer",
+            "Prostate cancer",
+            "Renal cell carcinoma",
+            "Solid tumors",
+            "Thyroid cancer"
+        ],
+        "Mechanism": [
+            "CDK4/6 inhibitor",
+            "EGFR inhibitor",
+            "Epigenetic modulator",
+            "FGFR inhibitor",
+            "Monoclonal antibody",
+            "PI3K inhibitor",
+            "Selective estrogen receptor modulator"
+        ]
+    },
+    {
+        "Drug": "Imatinib",
+        "Gene": [
+            "AR",
+            "CD274",
+            "EGFR",
+            "ERBB2",
+            "FGFR2",
+            "KITLG",
+            "MDM2",
+            "MTHFR",
+            "NOTCH1",
+            "PIK3CA",
+            "VEGFA"
+        ],
+        "Disease": [
+            "Colorectal cancer",
+            "Gastrointestinal stromal tumor",
+            "Melanoma",
+            "Myeloma",
+            "Ovarian cancer",
+            "Pancreatic cancer",
+            "Renal cell carcinoma",
+            "Solid tumors"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "CDK4/6 inhibitor",
+            "Epigenetic modulator",
+            "FGFR inhibitor",
+            "Immune checkpoint inhibitor",
+            "MEK inhibitor",
+            "PARP inhibitor",
+            "PI3K inhibitor",
+            "Selective estrogen receptor modulator"
+        ]
+    },
+    {
+        "Drug": "Ivacaftor",
+        "Gene": [
+            "CD274",
+            "CDKN2A",
+            "CYP2D6",
+            "ESR1",
+            "FGFR1",
+            "FGFR2",
+            "FGFR3",
+            "FGFR4",
+            "MDM2",
+            "SMARCA4"
+        ],
+        "Disease": [
+            "Advanced cancer",
+            "Brain tumor",
+            "Breast cancer",
+            "Colorectal cancer",
+            "Prostate cancer",
+            "Renal cell carcinoma",
+            "Solid tumors",
+            "Thyroid cancer"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "EGFR inhibitor",
+            "Epigenetic modulator",
+            "MEK inhibitor",
+            "PARP inhibitor",
+            "Selective estrogen receptor modulator",
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "JQ1",
+        "Gene": [
+            "ESR1",
+            "MDM2",
+            "MYC",
+            "PDCD1",
+            "PIK3CA",
+            "RET",
+            "SMARCA4",
+            "VEGFA"
+        ],
+        "Disease": [
+            "Advanced cancer",
+            "Breast cancer",
+            "Gastrointestinal stromal tumor",
+            "Hematologic malignancy",
+            "Leukemia",
+            "Ovarian cancer",
+            "Prostate cancer",
+            "Renal cell carcinoma"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "FGFR inhibitor",
+            "MEK inhibitor",
+            "Monoclonal antibody",
+            "PARP inhibitor",
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "Lapatinib",
+        "Gene": [
+            "BRAF",
+            "ESR1",
+            "FGFR1",
+            "FGFR3",
+            "KIT",
+            "KITLG",
+            "MDM2",
+            "MYC",
+            "PDGFRA",
+            "VEGFA",
+            "WNT1"
+        ],
+        "Disease": [
+            "Brain tumor",
+            "Breast cancer",
+            "Colorectal cancer",
+            "Hematologic malignancy",
+            "Leukemia",
+            "Melanoma",
+            "Ovarian cancer",
+            "Pancreatic cancer",
+            "Renal cell carcinoma"
+        ],
+        "Mechanism": [
+            "CDK4/6 inhibitor",
+            "Immune checkpoint inhibitor",
+            "Monoclonal antibody",
+            "PARP inhibitor",
+            "PI3K inhibitor",
+            "Selective estrogen receptor modulator",
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "Olaparib",
+        "Gene": [
+            "BRAF",
+            "BRCA2",
+            "CD274",
+            "ERBB2",
+            "FGFR2",
+            "FGFR4",
+            "KRAS",
+            "MTHFR",
+            "PDCD1",
+            "PDGFRA",
+            "WNT1"
+        ],
+        "Disease": [
+            "Advanced cancer",
+            "Breast cancer",
+            "Colorectal cancer",
+            "Gastrointestinal stromal tumor",
+            "Melanoma",
+            "Myeloma",
+            "Ovarian cancer",
+            "Prostate cancer",
+            "Renal cell carcinoma"
+        ],
+        "Mechanism": [
+            "CDK4/6 inhibitor",
+            "EGFR inhibitor",
+            "Epigenetic modulator",
+            "Immune checkpoint inhibitor",
+            "MEK inhibitor",
+            "Monoclonal antibody",
+            "PARP inhibitor",
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "Osimertinib",
+        "Gene": [
+            "CD274",
+            "FGFR4",
+            "KIT",
+            "KITLG",
+            "MDM2",
+            "MYC",
+            "PDCD1",
+            "PIK3CA",
+            "RET",
+            "SMARCA4"
+        ],
+        "Disease": [
+            "Breast cancer",
+            "Colorectal cancer",
+            "Leukemia",
+            "Melanoma",
+            "Myeloma",
+            "Pancreatic cancer",
+            "Prostate cancer",
+            "Solid tumors",
+            "Thyroid cancer"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "CDK4/6 inhibitor",
+            "EGFR inhibitor",
+            "FGFR inhibitor",
+            "Monoclonal antibody",
+            "PI3K inhibitor",
+            "Selective estrogen receptor modulator",
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "Sunitinib",
+        "Gene": [
+            "ALK",
+            "APC",
+            "BRAF",
+            "BRCA2",
+            "CDKN2A",
+            "CYP2D6",
+            "EGFR",
+            "KIT",
+            "MET",
+            "MTHFR",
+            "PDGFRA",
+            "PIK3CA",
+            "PTEN",
+            "SMAD4"
+        ],
+        "Disease": [
+            "Brain tumor",
+            "Breast cancer",
+            "Leukemia",
+            "Lung cancer",
+            "Ovarian cancer",
+            "Pancreatic cancer",
+            "Prostate cancer",
+            "Solid tumors",
+            "Thyroid cancer"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "CDK4/6 inhibitor",
+            "EGFR inhibitor",
+            "Epigenetic modulator",
+            "Immune checkpoint inhibitor",
+            "MEK inhibitor",
+            "Monoclonal antibody",
+            "PI3K inhibitor",
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "Tamoxifen",
+        "Gene": [
+            "CD274",
+            "CYP2D6",
+            "FGFR3",
+            "FGFR4",
+            "KITLG",
+            "MTHFR",
+            "PIK3CA",
+            "PTEN",
+            "TP53"
+        ],
+        "Disease": [
+            "Advanced cancer",
+            "Gastrointestinal stromal tumor",
+            "Myeloma",
+            "Ovarian cancer",
+            "Pancreatic cancer",
+            "Solid tumors"
+        ],
+        "Mechanism": [
+            "CDK4/6 inhibitor",
+            "EGFR inhibitor",
+            "Epigenetic modulator",
+            "Immune checkpoint inhibitor",
+            "Monoclonal antibody",
+            "Selective estrogen receptor modulator",
+            "Tyrosine kinase inhibitor"
+        ]
+    },
+    {
+        "Drug": "Trastuzumab",
+        "Gene": [
+            "APC",
+            "BRAF",
+            "CTNNB1",
+            "FGFR1",
+            "FGFR4",
+            "KIT",
+            "KRAS",
+            "MDM2",
+            "MTHFR",
+            "VEGFA",
+            "WNT1"
+        ],
+        "Disease": [
+            "Brain tumor",
+            "Breast cancer",
+            "Hematologic malignancy",
+            "Lung cancer",
+            "Ovarian cancer",
+            "Prostate cancer",
+            "Renal cell carcinoma",
+            "Solid tumors",
+            "Thyroid cancer"
+        ],
+        "Mechanism": [
+            "Androgen receptor antagonist",
+            "CDK4/6 inhibitor",
+            "FGFR inhibitor",
+            "Immune checkpoint inhibitor",
+            "MEK inhibitor",
+            "Monoclonal antibody",
+            "Selective estrogen receptor modulator"
+        ]
+    }
+]
